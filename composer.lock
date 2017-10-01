@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "37c7f91f526fef261ae98adb254883ed",
+    "content-hash": "d7ca23bfe3adecc3beda85d197db4a0b",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -1131,50 +1131,6 @@
             "description": "The Illuminate View package.",
             "homepage": "https://laravel.com",
             "time": "2017-08-25T13:20:17+00:00"
-        },
-        {
-            "name": "jakubkratina/lumen-dingo-route-list",
-            "version": "0.9.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jakubkratina/lumen-dingo-route-list.git",
-                "reference": "84a47c1350071d23d0e4b7f402019223ecb3aee1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jakubkratina/lumen-dingo-route-list/zipball/84a47c1350071d23d0e4b7f402019223ecb3aee1",
-                "reference": "84a47c1350071d23d0e4b7f402019223ecb3aee1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/RouteListCommand.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jakub Kratina",
-                    "email": "me@jakubkratina.cz"
-                }
-            ],
-            "description": "Route:list command support at Lumen framework application with Dingo API framework",
-            "keywords": [
-                "api",
-                "command",
-                "dingo",
-                "list",
-                "lumen",
-                "route"
-            ],
-            "time": "2016-05-20T20:31:17+00:00"
         },
         {
             "name": "laravel/lumen-framework",
