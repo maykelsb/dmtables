@@ -3,7 +3,7 @@
 Homestead.json
 Homestead.yaml
 .env
-/resources/angular/node_modules/*
+/node_modules/*
 /public/angular/*.js*
 /public/angular/app/*
 npm-debug.log

@@ -13,7 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \JK\Dingo\Api\Console\Commands\RouteListCommand::class
     ];
 
     /**
