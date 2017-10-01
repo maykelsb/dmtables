@@ -1,0 +1,9 @@
+<div *ngIf="table">
+  <h2>Tabela: {{table.name}}</h2>
+  <div><label>id: </label>{{table.id}}</div>
+  <div>
+    <label>name: </label>
+    <input [(ngModel)]="table.name" placeholder="name">
+  </div>
+  <button (click)="goBack()">Voltar</button>
+</div>

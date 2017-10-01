@@ -5,6 +5,12 @@ import { TABLES } from './mock-tables';
 
 @Injectable()
 export class TableService {
+
+  getTable(id: number): Promise<Table> {
+    return this.getTables()
+      .then(tables => tables.find(table => table.id === id));
+  }
+
   getTables(): Promise<Table[]> {
     return Promise.resolve(TABLES);
   }

@@ -15,19 +15,10 @@ import { DashboardComponent } from './dashboard.component';
     BrowserModule,
     FormsModule,
     RouterModule.forRoot([
-      {
-        path: 'tables',
-        component: TablesComponent
-      },
-      {
-        path: 'dashboard',
-        component: DashboardComponent
-      },
-      {
-        path: '',
-        redirectTo: '/dashboard',
-        pathMatch: 'full'
-      }
+      { path: 'tables', component: TablesComponent },
+      { path: 'table/:id', component: TableDetailComponent },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ])
   ],
   declarations: [
