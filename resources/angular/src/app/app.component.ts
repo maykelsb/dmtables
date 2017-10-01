@@ -6,7 +6,11 @@ import { TableService } from './table.service';
   selector: 'my-app',
   template: `
   <h1>{{title}}</h1>
-  <my-tables></my-tables>
+  <nav>
+    <a routerLink="/dashboard">Dashboard</a>
+    <a routerLink="/tables">Tabelas</a>
+  </nav>
+  <router-outlet></router-outlet>
   `,
   providers: [ TableService ]
 })

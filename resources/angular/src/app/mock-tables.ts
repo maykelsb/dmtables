@@ -1,7 +1,7 @@
 import { Table } from './table';
 
 export const TABLES: Table[] = [
-  { id: 1, name: 'Raças' },
+  { id: 1, name: 'Raçasss' },
   { id: 2, name: 'Cidades' },
   { id: 3, name: 'Profissões' },
   { id: 4, name: 'Armas' },
