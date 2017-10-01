@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "QuickStart package.json from the documentation, supplemented with testing support",
   "scripts": {
-    "build": "tsc -p src/",
-    "build:watch": "tsc -p src/ -w",
-    "build:e2e": "tsc -p e2e/",
-    "serve": "lite-server -c=bs-config.json",
-    "serve:e2e": "lite-server -c=bs-config.e2e.json",
+    "build": "tsc -p resources/angular/src/",
+    "build:watch": "tsc -p resources/angular/src/ -w",
+    "build:e2e": "tsc -p resources/angular/e2e/",
+    "serve": "lite-server -c=resources/angular/bs-config.json",
+    "serve:e2e": "lite-server -c=resources/angular/bs-config.e2e.json",
     "prestart": "npm run build",
     "start": "concurrently \"npm run build:watch\" \"npm run serve\"",
     "pree2e": "npm run build:e2e",
@@ -18,7 +18,7 @@
     "test": "concurrently \"npm run build:watch\" \"karma start karma.conf.js\"",
     "pretest:once": "npm run build",
     "test:once": "karma start karma.conf.js --single-run",
-    "lint": "tslint ./src/**/*.ts -t verbose"
+    "lint": "tslint ./resources/angular/src/**/*.ts -t verbose"
   },
   "keywords": [],
   "author": "",
