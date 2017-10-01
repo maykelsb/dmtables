@@ -6,4 +6,5 @@ Homestead.yaml
 /node_modules/*
 /public/angular/*.js*
 /public/angular/app/*
+!/public/angular/app/*.html
 npm-debug.log
