@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -10,9 +10,10 @@ import { TableService } from './table.service';
 @Component({
   selector: 'table-detail',
   templateUrl: './table-detail.component.html',
+  styleUrls: [ './table-detail.component.css' ]
 })
 export class TableDetailComponent implements OnInit {
-  @Input() table: Table;
+  table: Table;
 
   constructor(
     private tableService: TableService,

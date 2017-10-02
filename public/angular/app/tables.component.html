@@ -1,0 +1,12 @@
+<h2>Minhas tabelas</h2>
+<ul class="tables">
+  <li *ngFor="let table of tables"
+      [class.selected]="table === selectedTable"
+      (click)="onSelect(table)">
+    <span class="badge">{{table.id}}</span> {{table.name}}
+  </li>
+</ul>
+<div *ngIf="selectedTable">
+  <h2>{{selectedTable.name | uppercase}} selecionada</h2>
+  <button (click)="goToTable()">Ver detalhes</button>
+</div>
