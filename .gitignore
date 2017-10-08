@@ -2,7 +2,7 @@
 /.idea
 Homestead.json
 Homestead.yaml
-.env
+.env*
 /node_modules/*
 /public/angular/*.js*
 /public/angular/app/*
