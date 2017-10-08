@@ -30,7 +30,7 @@ class CreateAuthTable extends Migration
                 ->on('users');
         });
 
-        DB:statement("ALTER TABLE '{$this->tableName}' comment 'Stores useris auth tokens'");
+        DB::statement("ALTER TABLE '{$this->tableName}' comment 'Stores useris auth tokens'");
     }
 
     /**

@@ -27,7 +27,7 @@ class CreateUserTable extends Migration
             $table->timestamps();
         });
 
-        DB:statement("ALTER TABLE '{$this->tableName}' comment 'Stores app users'");
+        DB::statement("ALTER TABLE '{$this->tableName}' comment 'Stores app users'");
     }
 
     /**

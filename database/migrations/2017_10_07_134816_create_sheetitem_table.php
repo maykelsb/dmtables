@@ -37,7 +37,7 @@ class CreateSheetitemTable extends Migration
                 ->on('sheets');
         });
 
-        DB:statement("ALTER TABLE '{$this->tableName}' comment 'Stores data sheet item or subtable'");
+        DB::statement("ALTER TABLE '{$this->tableName}' comment 'Stores data sheet item or subtable'");
     }
 
     /**

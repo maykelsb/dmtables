@@ -31,7 +31,7 @@ class CreateSheetTable extends Migration
                 ->on('users');
         });
 
-        DB:statement("ALTER TABLE '{$this->tableName}' comment 'Stores data sheets'");
+        DB::statement("ALTER TABLE '{$this->tableName}' comment 'Stores data sheets'");
     }
 
     /**
