@@ -30,6 +30,13 @@ class CreateUserTable extends Migration
         });
 
         DB::statement("ALTER TABLE `{$this->tableName}` comment 'Stores app users'");
+
+        DB::table('users')->insert([
+            'user' => 'dungeonmaster',
+            'password' => md5('dm'),
+            'fullname' => 'Dungeon Master',
+            'created_at' => \DB::raw('CURRENT_TIMESTAMP')
+        ]);
     }
 
     /**
