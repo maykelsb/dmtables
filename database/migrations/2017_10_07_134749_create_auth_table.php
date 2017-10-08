@@ -16,8 +16,11 @@ class CreateAuthTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->integer('userid')
+                ->unsigned()
                 ->comment('References users.id');
             $table->char('network', 1)
                 ->comment('Specifies the service used for login: (F)acebook, (T)witter and (G)oogle');
@@ -30,7 +33,7 @@ class CreateAuthTable extends Migration
                 ->on('users');
         });
 
-        DB::statement("ALTER TABLE '{$this->tableName}' comment 'Stores useris auth tokens'");
+        DB::statement("ALTER TABLE `{$this->tableName}` comment 'Stores useris auth tokens'");
     }
 
     /**

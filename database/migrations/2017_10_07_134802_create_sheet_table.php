@@ -16,8 +16,11 @@ class CreateSheetTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->integer('userid')
+                ->unsigned()
                 ->comment('References users.id');
             $table->string('name', 50)
                 ->comment('Sheet name');
@@ -31,7 +34,7 @@ class CreateSheetTable extends Migration
                 ->on('users');
         });
 
-        DB::statement("ALTER TABLE '{$this->tableName}' comment 'Stores data sheets'");
+        DB::statement("ALTER TABLE `{$this->tableName}` comment 'Stores data sheets'");
     }
 
     /**

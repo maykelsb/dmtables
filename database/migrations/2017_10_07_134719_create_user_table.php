@@ -16,6 +16,8 @@ class CreateUserTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->string('user', 45)
                 ->comment('Name  used by the user to login and app display');
@@ -27,7 +29,7 @@ class CreateUserTable extends Migration
             $table->timestamps();
         });
 
-        DB::statement("ALTER TABLE '{$this->tableName}' comment 'Stores app users'");
+        DB::statement("ALTER TABLE `{$this->tableName}` comment 'Stores app users'");
     }
 
     /**
