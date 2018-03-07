@@ -2,7 +2,6 @@
 /**
  * This file is part of Tables4DMs project.
  *
- * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  * @license https://opensource.org/licenses/MIT The MIT License
  * @copyright 2017 Maykel S. Braz
  * @link http://github.com/maykelsb/tables4dms-api
@@ -32,14 +31,18 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      */
     protected $cc;
 
-//    /**
-//     * @var string
-//     */
-//    protected $controllerName;
-
     public function __construct()
     {
-//        $this->controllerName = $this->getControllerName();
+    }
+
+    /**
+     * Return reference for cc
+     *
+     * @return Silex\ControllerCollection
+     */
+    public function getCc()
+    {
+        return $this->cc;
     }
 
     /**
@@ -53,17 +56,8 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         $this->app = $app;
         $this->cc = $this->app['controllers_factory'];
 
-        return $this->enableRoutes()->cc;
+        return $this->enableRoutes()->getCc();
     }
-
-//    final protected function getControllerName()
-//    {
-//        return str_replace(
-//          'ControllerProvider',
-//          '',
-//          end(explode('\\', get_class($this)))
-//        );
-//    }
 
     /**
      * Find 'Action' methods and bind them to routes.
@@ -72,6 +66,7 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
     {
         $reflection = new \ReflectionClass($this);
         foreach ($reflection->getMethods(\ReflectionMethod::IS_PROTECTED) as $method) {
+
             if ('Action' === substr($method->getName(), -6)) {
                 $this->{$method->getName()}();
             }

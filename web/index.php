@@ -13,11 +13,16 @@
  */
 require_once __DIR__ . '/../vendor/autoload.php';
 
+
+//require_once __DIR__ . '/../src/Tables4dms/Provider/Controller/TablesControllerProvider.php';
+
+
 $app = new Silex\Application();
 
 $app['debug'] = true;
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
-$app->run();
+$app->mount('/tables', new Tables4dms\Provider\Controller\TablesControllerProvider())
+  ->run();
 
