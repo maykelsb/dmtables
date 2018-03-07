@@ -1,5 +1,11 @@
 {
     "require": {
         "silex/silex": "~2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tables4dms\\": "src/Tables4dms/"
+        }
     }
 }
+
