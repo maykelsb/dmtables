@@ -11,11 +11,25 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use Silex\Application;
+use Silex\Provider\DoctrineServiceProvider;
 
+use Lokhman\Silex\Provider\ConfigServiceProvider;
 use Lokhman\Silex\Console\Console;
 use Lokhman\Silex\Console\Command;
 
 $app = new Application();
+
+$app->register(
+    new ConfigServiceProvider(),
+    ['config.dir' => __DIR__ . '/../app/config']
+);
+
+$app['debug'] = $app['config']['debug'];
+
+$app->register(
+    new DoctrineServiceProvider(),
+    ['db.options' => $app['config']['db.options']]
+);
 
 $console = new Console($app);
 
