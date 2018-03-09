@@ -1,0 +1,13 @@
+{
+    "env": "%__ENV__%",
+    "debug": true,
+    "db.options": {
+        "driver": "pdo_mysql",
+        "host": "localhost",
+        "dbname": "rpgtables",
+        "user": "rpgtables",
+        "password": "upzone",
+        "charset": "utf8"
+    }
+}
+
