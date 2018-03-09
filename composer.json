@@ -1,7 +1,8 @@
 {
     "require": {
         "silex/silex": "~2.0",
-        "kurl/silex-doctrine-migrations-provider": "^0.3.0"
+        "lokhman/silex-doctrine-migrations": "^2.0",
+        "lokhman/silex-console": "^2.0"
     },
     "autoload": {
         "psr-4": {

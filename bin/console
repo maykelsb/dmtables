@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * This file is part of Tables4DMs project.
@@ -9,8 +10,14 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Symfony\Component\Console\Application;
+use Silex\Application;
+
+use Lokhman\Silex\Console\Console;
+use Lokhman\Silex\Console\Command;
 
 $app = new Application();
-$app->run();
+
+$console = new Console($app);
+
+$console->run();
 
