@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "132711611ca4efbac5cc4cc0f56990ce",
+    "content-hash": "8cdcde3b43dfae1edf37685834174769",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -748,6 +748,46 @@
             "time": "2018-02-27T07:30:56+00:00"
         },
         {
+            "name": "kurl/silex-doctrine-migrations-provider",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kurlltd/silex-doctrine-migrations-provider.git",
+                "reference": "b84de3626eeb172dda9399e5c1c2b8797b4e94a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kurlltd/silex-doctrine-migrations-provider/zipball/b84de3626eeb172dda9399e5c1c2b8797b4e94a8",
+                "reference": "b84de3626eeb172dda9399e5c1c2b8797b4e94a8",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.2",
+                "doctrine/migrations": "^1.5",
+                "php": "^7.1.0",
+                "pimple/pimple": "^3.0",
+                "silex/api": "^2.0",
+                "symfony/console": "^2.3 | ^3.0"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.2",
+                "phpunit/phpunit": "^5.7",
+                "silex/silex": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kurl\\Silex\\Provider\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A doctrine migrations provider for silex",
+            "time": "2017-06-27T10:29:35+00:00"
+        },
+        {
             "name": "lokhman/silex-config",
             "version": "2.0.2",
             "source": {
@@ -839,51 +879,6 @@
                 "tools"
             ],
             "time": "2017-03-17T15:07:32+00:00"
-        },
-        {
-            "name": "lokhman/silex-doctrine-migrations",
-            "version": "2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lokhman/silex-doctrine-migrations.git",
-                "reference": "0b7152044ff533b25b8786cf1e4359d0d8d8da3a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lokhman/silex-doctrine-migrations/zipball/0b7152044ff533b25b8786cf1e4359d0d8d8da3a",
-                "reference": "0b7152044ff533b25b8786cf1e4359d0d8d8da3a",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/dbal": "~2.2",
-                "doctrine/migrations": "^1.0",
-                "silex/silex": "~2.0",
-                "symfony/console": "~3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Lokhman\\Silex\\Provider\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alexander Lokhman",
-                    "email": "alex.lokhman@gmail.com"
-                }
-            ],
-            "description": "Silex service provider for Doctrine Migrations library",
-            "keywords": [
-                "doctrine",
-                "migrations",
-                "provider",
-                "silex"
-            ],
-            "time": "2016-08-30T13:29:37+00:00"
         },
         {
             "name": "ocramius/package-versions",

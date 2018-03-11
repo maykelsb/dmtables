@@ -14,10 +14,15 @@ use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 
 use Lokhman\Silex\Provider\ConfigServiceProvider;
+
 use Lokhman\Silex\Console\Console;
 use Lokhman\Silex\Console\Command;
 
+use Kurl\Silex\Provider\DoctrineMigrationsProvider;
+
 $app = new Application();
+
+$console = new Console($app);
 
 $app->register(
     new ConfigServiceProvider(),
@@ -31,7 +36,14 @@ $app->register(
     ['db.options' => $app['config']['db.options']]
 );
 
-$console = new Console($app);
+$app->register(
+    new DoctrineMigrationsProvider($console),
+    [
+        'migrations.directory' => __DIR__ . '/../app/migrations',
+        'migrations.namespace' => 'Table4dms\Migrations'
+    ]
+);
 
+$app->boot();
 $console->run();
 
