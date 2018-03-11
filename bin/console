@@ -14,11 +14,12 @@ use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 
 use Lokhman\Silex\Provider\ConfigServiceProvider;
-
 use Lokhman\Silex\Console\Console;
 use Lokhman\Silex\Console\Command;
 
 use Kurl\Silex\Provider\DoctrineMigrationsProvider;
+
+use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 
 $app = new Application();
 
@@ -34,6 +35,11 @@ $app['debug'] = $app['config']['debug'];
 $app->register(
     new DoctrineServiceProvider(),
     ['db.options' => $app['config']['db.options']]
+);
+
+$app->register(
+    new DoctrineOrmServiceProvider(),
+    $app['config']['orm']
 );
 
 $app->register(
