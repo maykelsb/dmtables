@@ -13,7 +13,7 @@
     "migrations": {
         "migrations.name": "Table4DMs migrations",
         "migrations.table_name": "table4dms_migrations",
-        "migrations.directory": "../app/migrations",
+        "migrations.directory": "app/migrations",
         "migrations.namespace": "Table4dms\\Migrations"
     },
     "orm": {
