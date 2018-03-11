@@ -38,12 +38,7 @@ $app->register(
 
 $app->register(
     new DoctrineMigrationsProvider($console),
-    [
-        'migrations.name' => 'Table4DMs migrations',
-        'migrations.table_name' => 'table4dms_migrations',
-        'migrations.directory' => __DIR__ . '/../app/migrations',
-        'migrations.namespace' => 'Table4dms\Migrations'
-    ]
+    $app['config']['migrations']
 );
 
 $app->boot();
