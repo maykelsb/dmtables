@@ -31,5 +31,15 @@ class Users
      * @ORM\Column(type="string")
      */
     private $fullname;
+
+    /**
+     * @ORM\Column(type="datetime", name="created_at")
+     */
+     private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", name="updated_at")
+     */
+    private $updatedAt;
 }
 

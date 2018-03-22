@@ -24,7 +24,7 @@
                 "0": {
                     "type": "annotation",
                     "namespace": "Tables4dms\\Entity",
-                    "path": "src/Table4dms/Entity",
+                    "path": "src/Tables4dms/Entity",
                     "use_simple_annotation_reader": false
                 }
             }

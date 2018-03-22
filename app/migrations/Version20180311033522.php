@@ -41,6 +41,15 @@ class Version20180311033522 extends AbstractMigration
             ->addUniqueIndex(['user']);
     }
 
+    public function postUp(Schema $schema)
+    {
+        $dml = <<<DML
+INSERT INTO {$this->tableName}(user, password, fullname)
+  VALUES('dungeonmaster', md5('dm'), 'Dungeon Master');
+DML;
+        $this->connection->exec($dml);
+    }
+
     public function down(Schema $schema)
     {
         $schema->dropTable($this->tableName);
