@@ -9,8 +9,11 @@
 
 namespace Tables4dms\Provider\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use Tables4dms\Transformer\UserTransformer;
 
+use Symfony\Component\HttpFoundation\Response;
+use League\Fractal\Resource\Item;
+use League\Fractal\Resource\Collection;
 
 /**
  * Controller for users requests.
@@ -22,19 +25,27 @@ class UsersControllerProvider extends AbstractControllerProvider
     protected function usersAction()
     {
         $this->getCc()->get('/', function(){
-            return 'users';
+
+            $data = $this->getEntityManager()
+                ->getRepository('Tables4dms\\Entity\\Users')
+                ->findAll();
+
+            return $this->response(
+                new Collection($data, new UserTransformer())
+            );
         })->bind('users.list');
     }
 
-    protected function openTableAction()
+    protected function openUserAction()
     {
-        $this->getCc()->get('/{id}', function(){
-
-            $data = $this->app['orm.ems']['default']
+        $this->getCc()->get('/{id}', function($id){
+            $data = $this->getEntityManager()
                 ->getRepository('Tables4dms\\Entity\\Users')
-                ->find(['id' => 1]);
+                ->find(['id' => $id]);
 
-            return new Response($data);
+            return $this->response(
+                new Item($data, new UserTransformer())
+            );
         })->bind('users.open');
     }
 }
