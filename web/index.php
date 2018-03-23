@@ -29,6 +29,7 @@ $app->register(
     $app['config']['orm']
 );
 
+$app->register(new Tables4dms\Provider\FractalServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 $app->mount('/tables', new Tables4dms\Provider\Controller\TablesControllerProvider())
