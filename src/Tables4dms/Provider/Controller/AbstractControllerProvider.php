@@ -10,8 +10,12 @@
 namespace Tables4dms\Provider\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
+
+use League\Fractal\Resource\ResourceInterface;
 
 /**
  * Base controller provider to manage requests.
@@ -73,6 +77,30 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Get a reference for the entity manager.
+     *
+     * @param string $name Entity manager name.
+     */
+    protected function getEntityManager($name = 'default')
+    {
+        return $this->app['orm.ems'][$name];
+    }
+
+    /**
+     * Convert a fractal resource to json and return as Response.
+     *
+     * @param ResourceInterface $resource
+     */
+    protected function response(ResourceInterface $resource)
+    {
+        return new Response(
+            $this->app['fractal.manager']
+                ->createData($resource)
+                ->toJson()
+        );
     }
 }
 
