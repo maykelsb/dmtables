@@ -1,0 +1,65 @@
+#!/usr/bin/env php
+<?php
+/**
+ * This file is part of Tables4DMs project.
+ *
+ * @license https://opensource.org/licenses/MIT The MIT License
+ * @copyright 2017 Maykel S. Braz
+ * @link http://github.com/maykelsb/tables4dms-api
+ */
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Silex\Application;
+use Silex\Provider\DoctrineServiceProvider;
+
+use Lokhman\Silex\Provider\ConfigServiceProvider;
+use Lokhman\Silex\Console\Console;
+use Lokhman\Silex\Console\Command;
+
+use Kurl\Silex\Provider\DoctrineMigrationsProvider;
+
+use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
+
+use Symfony\Component\Console\Helper\HelperSet;
+
+use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+
+$app = new Application();
+$console = new Console($app);
+
+$app->register(
+    new ConfigServiceProvider(),
+    ['config.dir' => __DIR__ . '/../app/config']
+);
+
+$app['debug'] = $app['config']['debug'];
+
+$app->register(
+    new DoctrineServiceProvider(),
+    ['db.options' => $app['config']['db.options']]
+);
+
+$app->register(
+    new DoctrineOrmServiceProvider(),
+    $app['config']['orm']
+);
+
+$app->register(
+    new DoctrineMigrationsProvider($console),
+    $app['config']['migrations']
+);
+
+// -- Loading doctrine commands
+$helperSet = $console->getHelperSet();
+$helperSet->set(new ConnectionHelper($app['orm.em']->getConnection()), 'db');
+$helperSet->set(new EntityManagerHelper($app['orm.em']), 'em');
+
+$console->setHelperSet($helperSet);
+ConsoleRunner::addCommands($console);
+
+$app->boot();
+$console->run();
+

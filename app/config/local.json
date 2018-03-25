@@ -1,0 +1,39 @@
+{
+    "env": "%__ENV__%",
+    "debug": true,
+    "db": {
+        "db.options": {
+            "driver": "pdo_mysql",
+            "host": "192.168.99.100",
+            "port": "3306",
+            "dbname": "rpgtables",
+            "user": "rpgtables",
+            "password": "upzone",
+            "charset": "utf8"
+        }
+    },
+    "migrations": {
+        "migrations.name": "Table4DMs migrations",
+        "migrations.table_name": "table4dms_migrations",
+        "migrations.directory": "app/migrations",
+        "migrations.namespace": "Table4dms\\Migrations"
+    },
+    "orm": {
+        "orm.proxies_dir": "src/App/Entity/Proxy",
+        "orm.auto_generate_proxies": false,
+        "orm.em.options": {
+            "mappings": {
+                "0": {
+                    "type": "annotation",
+                    "namespace": "Tables4dms\\Entity",
+                    "path": "src/Tables4dms/Entity",
+                    "use_simple_annotation_reader": false
+                }
+            }
+        }
+    },
+    "swagger": {
+        "swagger.servicePath": "../src/Tables4dms"
+    }
+}
+

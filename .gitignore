@@ -1,11 +1,3 @@
-/vendor
-/.idea
-Homestead.json
-Homestead.yaml
-.env*
-/node_modules/*
-/public/angular/*.js*
-/public/angular/app/*
-!/public/angular/app/*.html
-!/public/angular/app/*.css
-npm-debug.log
+app/config/staging.json
+app/config/prod.json
+vendor
