@@ -11,7 +11,7 @@
 /**
  * Composer autoload
  */
-require __DIR__ . '/../vendor/autoload.php';
+$loader = require __DIR__ . '/../vendor/autoload.php';
 
 $app = new Silex\Application();
 $app->register(
@@ -23,15 +23,25 @@ $app['debug'] = $app['config']['debug'];
 
 $app->register(
     new Silex\Provider\DoctrineServiceProvider(),
-    ['db.options' => $app['config']['db.options']]
+    $app['config']['db']
 )->register(
     new Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(),
     $app['config']['orm']
 );
 
 $app->register(new Tables4dms\Provider\FractalServiceProvider());
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app->register(
+    new Basster\Silex\Provider\Swagger\SwaggerProvider(),
+    $app['config']['swagger']
+);
 
+// -- Fix to Doctrine annotations find Swagger namespace
+Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([
+    $loader,
+    'loadClass'
+]);
+
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->mount('/tables', new Tables4dms\Provider\Controller\TablesControllerProvider())
     ->mount('/users', new Tables4dms\Provider\Controller\UsersControllerProvider())
     ->run();

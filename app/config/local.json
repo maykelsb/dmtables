@@ -1,14 +1,16 @@
 {
     "env": "%__ENV__%",
     "debug": true,
-    "db.options": {
-        "driver": "pdo_mysql",
-        "host": "192.168.99.100",
-        "port": "3306",
-        "dbname": "rpgtables",
-        "user": "rpgtables",
-        "password": "upzone",
-        "charset": "utf8"
+    "db": {
+        "db.options": {
+            "driver": "pdo_mysql",
+            "host": "192.168.99.100",
+            "port": "3306",
+            "dbname": "rpgtables",
+            "user": "rpgtables",
+            "password": "upzone",
+            "charset": "utf8"
+        }
     },
     "migrations": {
         "migrations.name": "Table4DMs migrations",
@@ -29,6 +31,9 @@
                 }
             }
         }
+    },
+    "swagger": {
+        "swagger.servicePath": "../src/Tables4dms"
     }
 }
 
