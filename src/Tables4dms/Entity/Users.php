@@ -1,44 +1,78 @@
 <?php
+/**
+ * This file is part of Tables4DMs project.
+ *
+ * @license https://opensource.org/licenses/MIT The MIT License
+ * @copyright 2017 Maykel S. Braz
+ * @link http://github.com/maykelsb/tables4dms-api
+ */
 
 namespace Tables4dms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Swagger\Annotations as SWG;
 
 /**
+ * User entity.
+ *
  * @ORM\Entity(repositoryClass="Tables4dms\Repository\UsersRepository")
  * @ORM\Table(name="users")
+ * @SWG\Definition()
  */
 class Users
 {
     /**
+     * User id.
+     *
+     * @var integer
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     * @SWG\Property()
      */
     private $id;
 
     /**
+     * User name.
+     *
+     * @var string
      * @ORM\Column(type="string")
+     * @SWG\Property()
      */
     private $user;
 
     /**
+     * User password.
+     *
+     * @var string
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
+     * User full name.
+     *
+     * @var string
      * @ORM\Column(type="string")
+     * @SWG\Property()
      */
     private $fullname;
 
     /**
+     * Date of user creation.
+     *
+     * @var \DateTime
      * @ORM\Column(type="datetime", name="created_at")
+     * @SWG\Property()
      */
      private $createdAt;
 
     /**
+     * Date of last update on user.
+     *
+     * @var \DateTime
      * @ORM\Column(type="datetime", name="updated_at")
+     * @SWG\Property()
      */
     private $updatedAt;
 

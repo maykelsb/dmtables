@@ -11,9 +11,10 @@ namespace Tables4dms\Provider\Controller;
 
 use Tables4dms\Transformer\UserTransformer;
 
-use Symfony\Component\HttpFoundation\Response;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
+
+use Swagger\Annotations as SWG;
 
 /**
  * Controller for users requests.
@@ -22,6 +23,17 @@ use League\Fractal\Resource\Collection;
  */
 class UsersControllerProvider extends AbstractControllerProvider
 {
+    /**
+     * List users.
+     *
+     * @SWG\Get(
+     *  path="/users",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="User list."
+     *  )
+     * )
+     */
     protected function usersAction()
     {
         $this->getCc()->get('/', function(){
