@@ -17,7 +17,7 @@ use Swagger\Annotations as SWG;
  *
  * @ORM\Entity(repositoryClass="Tables4dms\Repository\UsersRepository")
  * @ORM\Table(name="users")
- * @SWG\Definition()
+ * @SWG\Definition(definition="User")
  */
 class Users
 {
