@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20180320004224 extends AbstractMigration
 {
-    protected $tableName = 'sheets';
+    protected $tableName = 'sheet';
 
     public function up(Schema $schema)
     {
@@ -19,7 +19,7 @@ class Version20180320004224 extends AbstractMigration
             ->setAutoincrement(true);
 
         $table->addColumn('userid', 'integer')
-            ->setComment('References users.id');
+            ->setComment('References user.id');
 
         $table->addColumn('name', 'string')
             ->setLength('50')
@@ -36,9 +36,7 @@ class Version20180320004224 extends AbstractMigration
             ->setColumnDefinition('timestamp default current_timestamp on update current_timestamp');
 
         $table->setPrimaryKey(['id'])
-            ->addForeignKeyConstraint('users', ['userid'], ['id'], [], 'sheets_fk_users');
-
-
+            ->addForeignKeyConstraint('user', ['userid'], ['id'], [], 'sheet_fk_user');
     }
 
     public function down(Schema $schema)

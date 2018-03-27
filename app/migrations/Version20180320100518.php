@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20180320100518 extends AbstractMigration
 {
-    protected $tableName = 'sheetitems';
+    protected $tableName = 'sheetitem';
 
     public function up(Schema $schema)
     {
@@ -19,7 +19,7 @@ class Version20180320100518 extends AbstractMigration
             ->setAutoincrement(true);
 
         $table->addColumn('sheetid', 'integer')
-            ->setComment('References sheets.id');
+            ->setComment('References sheet.id');
 
         $table->addColumn('dicenumber', 'integer')
             ->setComment('Represents a number which identifies that sheet item in a dice row');
@@ -39,8 +39,8 @@ class Version20180320100518 extends AbstractMigration
             ->setColumnDefinition('timestamp default current_timestamp on update current_timestamp');
 
         $table->setPrimaryKey(['id'])
-            ->addForeignKeyConstraint('sheets', ['sheetid'], ['id'], [], 'sheetitems_fk_sheet')
-            ->addForeignKeyConstraint('sheets', ['subsheetid'], ['id'], [], 'sheetitems_fk_subsheet');
+            ->addForeignKeyConstraint('sheet', ['sheetid'], ['id'], [], 'sheetitem_fk_sheet')
+            ->addForeignKeyConstraint('sheet', ['subsheetid'], ['id'], [], 'sheetitem_fk_subsheet');
     }
 
     public function down(Schema $schema)

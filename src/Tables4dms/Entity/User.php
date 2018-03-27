@@ -15,11 +15,11 @@ use Swagger\Annotations as SWG;
 /**
  * User entity.
  *
- * @ORM\Entity(repositoryClass="Tables4dms\Repository\UsersRepository")
- * @ORM\Table(name="users")
+ * @ORM\Entity(repositoryClass="Tables4dms\Repository\UserRepository")
+ * @ORM\Table(name="user")
  * @SWG\Definition(definition="User")
  */
-class Users
+class User
 {
     /**
      * User id.
@@ -209,6 +209,6 @@ class Users
     public function __toString()
     {
         return $this->getFullname();
-    }
-    
+    }   
 }
+

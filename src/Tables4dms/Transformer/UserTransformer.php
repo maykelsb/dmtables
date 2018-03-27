@@ -9,7 +9,7 @@
 
 namespace Tables4dms\Transformer;
 
-use Tables4dms\Entity\Users;
+use Tables4dms\Entity\User;
 use League\Fractal;
 
 /**
@@ -19,7 +19,7 @@ use League\Fractal;
  */
 class UserTransformer extends Fractal\TransformerAbstract
 {
-    public function transform(Users $user)
+    public function transform(User $user)
     {
         return [
             'id' => $user->getId(),
