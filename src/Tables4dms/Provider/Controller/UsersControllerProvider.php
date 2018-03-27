@@ -39,7 +39,7 @@ class UsersControllerProvider extends AbstractControllerProvider
         $this->getCc()->get('/', function(){
 
             $data = $this->getEntityManager()
-                ->getRepository('Tables4dms\\Entity\\Users')
+                ->getRepository('Tables4dms\\Entity\\User')
                 ->findAll();
 
             return $this->response(
@@ -52,7 +52,7 @@ class UsersControllerProvider extends AbstractControllerProvider
     {
         $this->getCc()->get('/{id}', function($id){
             $data = $this->getEntityManager()
-                ->getRepository('Tables4dms\\Entity\\Users')
+                ->getRepository('Tables4dms\\Entity\\User')
                 ->find(['id' => $id]);
 
             return $this->response(

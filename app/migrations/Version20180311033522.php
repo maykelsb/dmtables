@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20180311033522 extends AbstractMigration
 {
-    protected $tableName = 'users';
+    protected $tableName = 'user';
 
     public function up(Schema $schema)
     {

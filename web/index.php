@@ -23,7 +23,7 @@ $app['debug'] = $app['config']['debug'];
 
 $app->register(
     new Silex\Provider\DoctrineServiceProvider(),
-    $app['config']['db']
+    $app['config']['database']
 )->register(
     new Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(),
     $app['config']['orm']

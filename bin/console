@@ -8,57 +8,53 @@
  * @link http://github.com/maykelsb/tables4dms-api
  */
 
-require __DIR__ . '/../vendor/autoload.php';
+/**
+ * Composer autoload
+ */
+$loader = require __DIR__ . '/../vendor/autoload.php';
 
-use Silex\Application;
-use Silex\Provider\DoctrineServiceProvider;
-
-use Lokhman\Silex\Provider\ConfigServiceProvider;
-use Lokhman\Silex\Console\Console;
-use Lokhman\Silex\Console\Command;
-
-use Kurl\Silex\Provider\DoctrineMigrationsProvider;
-
-use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
-
-use Symfony\Component\Console\Helper\HelperSet;
-
-use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
-
-$app = new Application();
-$console = new Console($app);
+$app = new Silex\Application();
+$console = new Lokhman\Silex\Console\Console($app);
 
 $app->register(
-    new ConfigServiceProvider(),
+    new Lokhman\Silex\Provider\ConfigServiceProvider(),
     ['config.dir' => __DIR__ . '/../app/config']
 );
 
 $app['debug'] = $app['config']['debug'];
 
 $app->register(
-    new DoctrineServiceProvider(),
-    ['db.options' => $app['config']['db.options']]
-);
-
-$app->register(
-    new DoctrineOrmServiceProvider(),
+    new Silex\Provider\DoctrineServiceProvider(),
+    $app['config']['database']
+)->register(
+    new Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(),
     $app['config']['orm']
-);
-
-$app->register(
-    new DoctrineMigrationsProvider($console),
+)->register(
+    new Kurl\Silex\Provider\DoctrineMigrationsProvider($console),
     $app['config']['migrations']
 );
 
 // -- Loading doctrine commands
 $helperSet = $console->getHelperSet();
-$helperSet->set(new ConnectionHelper($app['orm.em']->getConnection()), 'db');
-$helperSet->set(new EntityManagerHelper($app['orm.em']), 'em');
+$helperSet->set(
+    new Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper(
+        $app['orm.em']->getConnection()
+    ),
+    'db'
+);
+$helperSet->set(
+    new Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($app['orm.em']),
+    'em'
+);
+
+// -- Fix to Doctrine annotations find Swagger namespace
+Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([
+    $loader,
+    'loadClass'
+]);
 
 $console->setHelperSet($helperSet);
-ConsoleRunner::addCommands($console);
+Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
 
 $app->boot();
 $console->run();
