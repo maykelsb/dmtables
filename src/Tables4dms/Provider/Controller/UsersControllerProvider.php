@@ -10,6 +10,7 @@
 namespace Tables4dms\Provider\Controller;
 
 use Tables4dms\Transformer\UserTransformer;
+use Tables4dms\Transformer\SheetTransformer;
 
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
@@ -48,6 +49,17 @@ class UsersControllerProvider extends AbstractControllerProvider
         })->bind('users.list');
     }
 
+    /**
+     * Open user.
+     *
+     * @SWG\Get(
+     *  path="/users/{id}",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="User data."
+     *  )
+     * )
+     */
     protected function openUserAction()
     {
         $this->getCc()->get('/{id}', function($id){
@@ -59,6 +71,19 @@ class UsersControllerProvider extends AbstractControllerProvider
                 new Item($data, new UserTransformer())
             );
         })->bind('users.open');
+    }
+
+    protected function userSheetsAction()
+    {
+        $this->getCc()->get('/{userid}/sheets', function($userid){
+            $data = $this->getEntityManager()
+                ->getRepository('Tables4dms\\Entity\\Sheet')
+                ->findAll(['user' => $userid]);
+
+            return $this->response(
+                new Collection($data, new SheetTransformer())
+            );
+        })->bind('users.sheet.list');
     }
 }
 
