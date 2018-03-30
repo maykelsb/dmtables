@@ -12,9 +12,6 @@ namespace Tables4dms\Provider\Controller;
 use Tables4dms\Transformer\UserTransformer;
 use Tables4dms\Transformer\SheetTransformer;
 
-use League\Fractal\Resource\Item;
-use League\Fractal\Resource\Collection;
-
 use Swagger\Annotations as SWG;
 
 /**
@@ -22,7 +19,7 @@ use Swagger\Annotations as SWG;
  *
  * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  */
-class UsersControllerProvider extends AbstractControllerProvider
+class UserControllerProvider extends AbstractControllerProvider
 {
     /**
      * List users.
@@ -38,19 +35,14 @@ class UsersControllerProvider extends AbstractControllerProvider
     protected function usersAction()
     {
         $this->getCc()->get('/', function(){
-
-            $data = $this->getEntityManager()
-                ->getRepository('Tables4dms\\Entity\\User')
+            $data = $this->getDefaultRepository()
                 ->findAll();
-
-            return $this->response(
-                new Collection($data, new UserTransformer())
-            );
+            return $this->response($data);
         })->bind('users.list');
     }
 
     /**
-     * Open user.
+     * Show user data.
      *
      * @SWG\Get(
      *  path="/users/{id}",
@@ -60,28 +52,35 @@ class UsersControllerProvider extends AbstractControllerProvider
      *  )
      * )
      */
-    protected function openUserAction()
+    protected function showUserAction()
     {
         $this->getCc()->get('/{id}', function($id){
-            $data = $this->getEntityManager()
-                ->getRepository('Tables4dms\\Entity\\User')
+            $data = $this->getDefaultRepository()
                 ->find(['id' => $id]);
-
-            return $this->response(
-                new Item($data, new UserTransformer())
-            );
-        })->bind('users.open');
+            return $this->response($data);
+        })->bind('user.show');
     }
 
+    /**
+     * List user sheets.
+     *
+     * @SWG\Get(
+     *  path="/user/{id}/sheets",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="List user sheets."
+     *  )
+     * )
+     */
     protected function userSheetsAction()
     {
         $this->getCc()->get('/{userid}/sheets', function($userid){
-            $data = $this->getEntityManager()
-                ->getRepository('Tables4dms\\Entity\\Sheet')
+            $data = $this->getRepository('Tables4dms\\Entity\\Sheet')
                 ->findAll(['user' => $userid]);
 
             return $this->response(
-                new Collection($data, new SheetTransformer())
+                $data,
+                'Tables4dms\\Transformer\\SheetTransformer'
             );
         })->bind('users.sheet.list');
     }

@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 
+use League\Fractal\Resource\Item;
+use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\ResourceInterface;
 
 /**
@@ -35,8 +37,15 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      */
     protected $cc;
 
+    /**
+     * @var string Resource name.
+     */
+    protected $resourceName;
+
+
     public function __construct()
     {
+        $this->resourceName = $this->getResourceName();
     }
 
     /**
@@ -90,17 +99,94 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
     }
 
     /**
-     * Convert a fractal resource to json and return as Response.
+     * Receives data, create a response and return it as JSON.
      *
-     * @param ResourceInterface $resource
+     * This method tries to discover the transformer to be used.
+     *
+     * @param mixed|object|array Data to be transformed.
+     * @param string|null Name of the transformer.
+     * @return Response
      */
-    protected function response(ResourceInterface $resource)
+    protected function response($data, $transformerClassName = null)
     {
+        if (is_null($transformerClassName)) {
+            $transformerClassName = $this->getDefaultTransformer();
+        }
+
+        if (!$this->isTransformerClass($transformerClassName)) {
+            throw new Exception("{$transformerClassName} is not a valid transformer class.");
+        }
+
+        switch (gettype($data)) {
+            case 'object':
+                $data = new Item($data, new $transformerClassName());
+                break;
+            default:
+                $data = new Collection($data, new $transformerClassName());
+        }
+
         return new Response(
             $this->app['fractal.manager']
-                ->createData($resource)
+                ->createData($data)
                 ->toJson()
         );
+    }
+
+    /**
+     * Verify if a class is a transformer.
+     *
+     * @param string $transformerClassName Transformer class name with namespace.
+     * @return bool
+     */
+    protected function isTransformerClass($transformerClassName)
+    {
+        $rfClass = new \ReflectionClass($transformerClassName);
+        return $rfClass->isSubclassOf('League\\Fractal\\TransformerAbstract');
+    }
+
+    /**
+     * Retrieves the transformer class name with namespace associated to the controller.
+     *
+     * @return string
+     */
+    protected function getDefaultTransformer()
+    {
+        return "{$this->app['config']['app.package']}\\Transformer\\{$this->resourceName}Transformer";
+    }
+
+    /**
+     * Retrives the repository associated to the controller.
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getDefaultRepository()
+    {
+        $entityName = "{$this->app['config']['app.package']}\\Entity\\{$this->resourceName}";
+        return $this->getEntityManager()
+            ->getRepository($entityName);
+    }
+
+    /**
+     * Find the name of this controller resource.
+     *
+     * @return string
+     */
+    protected function getResourceName()
+    {
+        $controller = explode('\\', get_class($this));
+        return str_replace('ControllerProvider', '', end($controller));
+    }
+
+    /**
+     * Alias to retrieve a repository.
+     *
+     * @param string $entityName Entity name with namespace.
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getRepository($entityName)
+    {
+        return $this->getEntityManager()
+            ->getRepository($entityName);
     }
 }
 

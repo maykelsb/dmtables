@@ -1,6 +1,7 @@
 {
     "env": "%__ENV__%",
     "debug": true,
+    "app.package": "Tables4dms",
     "database": {
         "db.options": {
             "driver": "pdo_mysql",
