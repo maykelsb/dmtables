@@ -1,3 +1,4 @@
 app/config/staging.json
 app/config/prod.json
 vendor
+src/Tables4dms/Entity/*.php~
