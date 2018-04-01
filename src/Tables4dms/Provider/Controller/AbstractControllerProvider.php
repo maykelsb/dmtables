@@ -188,5 +188,20 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         return $this->getEntityManager()
             ->getRepository($entityName);
     }
+
+    public function __call($methodName, $params)
+    {
+        switch ($methodName) {
+            case 'get':
+            case 'post':
+                return call_user_func_array(
+                    [$this->getCc(), $methodName],
+                    $params
+                );
+            default:
+                $className = get_class($this);
+                throw new \Exception("{$methodName}() is not declared in {$className}.");
+        }
+    }
 }
 
