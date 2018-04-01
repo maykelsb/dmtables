@@ -9,9 +9,6 @@
 
 namespace Tables4dms\Provider\Controller;
 
-use Tables4dms\Transformer\UserTransformer;
-use Tables4dms\Transformer\SheetTransformer;
-
 use Swagger\Annotations as SWG;
 
 /**
@@ -82,7 +79,7 @@ class UserControllerProvider extends AbstractControllerProvider
                 $data,
                 'Tables4dms\\Transformer\\SheetTransformer'
             );
-        })->bind('users.sheet.list');
+        })->bind('user.sheets.list');
     }
 }
 
