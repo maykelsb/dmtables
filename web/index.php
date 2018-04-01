@@ -42,7 +42,7 @@ Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([
 ]);
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
-$app->mount('/tables', new Tables4dms\Provider\Controller\TablesControllerProvider())
+$app->mount('/sheets', new Tables4dms\Provider\Controller\SheetControllerProvider())
     ->mount('/users', new Tables4dms\Provider\Controller\UserControllerProvider())
     ->run();
 
