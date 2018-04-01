@@ -22,7 +22,7 @@ class UserControllerProvider extends AbstractControllerProvider
      * List users.
      *
      * @SWG\Get(
-     *  path="/users",
+     *  path="/{_locale}/users",
      *  @SWG\Response(
      *      response=200,
      *      description="User list."
@@ -42,7 +42,7 @@ class UserControllerProvider extends AbstractControllerProvider
      * Show user data.
      *
      * @SWG\Get(
-     *  path="/users/{id}",
+     *  path="/{_locale}/users/{id}",
      *  @SWG\Response(
      *      response=200,
      *      description="User data."
@@ -62,7 +62,7 @@ class UserControllerProvider extends AbstractControllerProvider
      * List user sheets.
      *
      * @SWG\Get(
-     *  path="/user/{id}/sheets",
+     *  path="/{_locale}/users/{id}/sheets",
      *  @SWG\Response(
      *      response=200,
      *      description="List user sheets."
