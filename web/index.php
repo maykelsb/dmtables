@@ -44,7 +44,7 @@ Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([
 $app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(
     new Silex\Provider\TranslationServiceProvider(),
-    ['locale_fallbacks' => $app['config']['locale.fallback']]
+    ['locale_fallbacks' => [$app['config']['locale.fallback']]]
 )->extend('translator', function($translator, $app){
     $translator->addLoader(
         'yaml',
@@ -56,6 +56,8 @@ $app->register(
 
     return $translator;
 });
+
+$app->register(new Silex\Provider\ValidatorServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->mount('/{_locale}/sheets', new Tables4dms\Provider\Controller\SheetControllerProvider())
