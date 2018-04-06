@@ -30,6 +30,24 @@ class SheetControllerProvider extends AbstractControllerProvider
     protected function newSheetAction()
     {
         $this->post('/', function(Request $request){
+            $sheet = new \Tables4dms\Entity\Sheet();
+            $sheet->setName($request->request->get('name'));
+            $sheet->setDescription($request->request->get('description'));
+
+            // -- todo: change to get reference
+            $sheet->setUser(
+                $this->getRepository('Tables4dms\\Entity\\User')
+                    ->find(['id' => $request->request->get('user')])
+            );
+
+            $this->validate($sheet);
+            $this->getEntityManager()
+                ->persist($sheet);
+
+            $this->getEntityManager()
+                ->flush();
+
+
         })->bind('sheets.new');
     }
 }
