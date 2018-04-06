@@ -212,12 +212,13 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      */
     protected function validate($entity)
     {
-        if (!($errors = $this->app['validator']->validate($entity))) {
+
+        $errors = $this->app['validator']->validate($entity);
+        if (!($errors->count())) {
             return true;
         }
-
+        
         $vex = new \Tables4dms\Exception\ValidationException();
-
         foreach ($errors as $error) {
             $vex->add(
                 $error->getPropertyPath(),
