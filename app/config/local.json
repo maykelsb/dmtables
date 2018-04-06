@@ -37,8 +37,8 @@
         "swagger.servicePath": "../src/Tables4dms"
     },
     "locale.lang": {
-        "en": "app/locale/en.yml",
-        "pt_br": "app/locale/pt_br.yml"
+        "en": "../app/locale/en.yml",
+        "pt_br": "../app/locale/pt_br.yml"
     },
     "locale.fallback": "en"
 }

@@ -203,5 +203,29 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
                 throw new \Exception("{$methodName}() is not declared in {$className}.");
         }
     }
+
+    /**
+     * General validation method. Raises and ValidationException if needed.
+     *
+     * @return bool
+     * @throw \Tables4dms\Exception\ValidationException
+     */
+    protected function validate($entity)
+    {
+        if (!($errors = $this->app['validator']->validate($entity))) {
+            return true;
+        }
+
+        $vex = new \Tables4dms\Exception\ValidationException();
+
+        foreach ($errors as $error) {
+            $vex->add(
+                $error->getPropertyPath(),
+                $error->getMessage()
+            );
+        }
+
+        throw $vex;
+    }
 }
 
