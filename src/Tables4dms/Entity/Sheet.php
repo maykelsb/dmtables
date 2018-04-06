@@ -11,6 +11,8 @@ namespace Tables4dms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Sheet entity.
@@ -206,4 +208,12 @@ class Sheet
     {
         return $this->user;
     }
+
+    static public function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('name', new Assert\NotBlank())
+            ->addPropertyConstraint('name', new Assert\Length(['max' => 50]));
+        $metadata->addPropertyConstraint('user', new Assert\NotBlank());
+    }
 }
+
