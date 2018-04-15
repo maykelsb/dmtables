@@ -37,12 +37,6 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      */
     protected $cc;
 
-    /**
-     * @var string Resource name.
-     */
-    protected $resourceName;
-
-
     public function __construct()
     {
         $this->resourceName = $this->getResourceName();
@@ -86,16 +80,6 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         }
 
         return $this;
-    }
-
-    /**
-     * Get a reference for the entity manager.
-     *
-     * @param string $name Entity manager name.
-     */
-    protected function getEntityManager($name = 'default')
-    {
-        return $this->app['orm.ems'][$name];
     }
 
     /**
@@ -152,41 +136,6 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
     protected function getDefaultTransformer()
     {
         return "{$this->app['config']['app.package']}\\Transformer\\{$this->resourceName}Transformer";
-    }
-
-    /**
-     * Retrives the repository associated to the controller.
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getDefaultRepository()
-    {
-        $entityName = "{$this->app['config']['app.package']}\\Entity\\{$this->resourceName}";
-        return $this->getEntityManager()
-            ->getRepository($entityName);
-    }
-
-    /**
-     * Find the name of this controller resource.
-     *
-     * @return string
-     */
-    protected function getResourceName()
-    {
-        $controller = explode('\\', get_class($this));
-        return str_replace('ControllerProvider', '', end($controller));
-    }
-
-    /**
-     * Alias to retrieve a repository.
-     *
-     * @param string $entityName Entity name with namespace.
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getRepository($entityName)
-    {
-        return $this->getEntityManager()
-            ->getRepository($entityName);
     }
 
     public function __call($methodName, $params)
