@@ -14,7 +14,7 @@ namespace Tables4dms\Traits;
  *
  * This implmentation use textual keys, so, it works like a hashmap.
  *
- * @author Maykel s. Braz <maykelsb@yahoo.com.br>
+ * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  */
 trait HashMapTrait
 {
