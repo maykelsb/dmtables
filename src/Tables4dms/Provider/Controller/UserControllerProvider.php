@@ -32,9 +32,9 @@ class UserControllerProvider extends AbstractControllerProvider
     protected function usersAction()
     {
         $this->getCc()->get('/', function(){
-            $data = $this->getDefaultRepository()
-                ->findAll();
-            return $this->response($data);
+            return $this->response(
+                $this->app['t4dm.user']->getUsers()
+            );
         })->bind('users.list');
     }
 
@@ -52,9 +52,9 @@ class UserControllerProvider extends AbstractControllerProvider
     protected function showUserAction()
     {
         $this->getCc()->get('/{id}', function($id){
-            $data = $this->getDefaultRepository()
-                ->find(['id' => $id]);
-            return $this->response($data);
+            return $this->response(
+                $this->app['t4dm.user']->getUsers(['id' => $id])
+            );
         })->bind('user.show');
     }
 

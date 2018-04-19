@@ -27,6 +27,8 @@ use League\Fractal\Resource\ResourceInterface;
  */
 abstract class AbstractControllerProvider implements ControllerProviderInterface
 {
+    use \Tables4dms\Traits\ResourceNameTrait;
+
     /**
      * @var Silex\Application
      */
@@ -36,11 +38,6 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      * @var Silex\ControllerCollection
      */
     protected $cc;
-
-    public function __construct()
-    {
-        $this->resourceName = $this->getResourceName();
-    }
 
     /**
      * Return reference for cc
@@ -135,7 +132,9 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      */
     protected function getDefaultTransformer()
     {
-        return "{$this->app['config']['app.package']}\\Transformer\\{$this->resourceName}Transformer";
+        return "{$this->app['config']['app.package']}\\Transformer\\"
+            . $this->getResourceName()
+            . "Transformer";
     }
 
     public function __call($methodName, $params)

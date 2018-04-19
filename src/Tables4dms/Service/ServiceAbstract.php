@@ -15,7 +15,7 @@ namespace Tables4dms\Service;
  * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  * @abstract
  */
-abstract class AbstractService
+abstract class ServiceAbstract implements \Pimple\ServiceProviderInterface
 {
     use \Tables4dms\Traits\ResourceNameTrait;
 
@@ -24,10 +24,15 @@ abstract class AbstractService
      */
     protected $app;
 
-    final public function __construct(Silex\Application $app)
+    public function __construct()
     {
-        $this->app = $app;
         $this->getResourceName(); 
+    }
+
+    public function register(\Pimple\Container $container)
+    {
+        $container['t4dm.user'] = $this;
+        $this->app = $container;
     }
 
     /**
