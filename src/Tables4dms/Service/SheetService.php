@@ -10,11 +10,11 @@
 namespace Tables4dms\Service;
 
 /**
- * Find, retrieve, transform and return User data.
+ * Find, retrieve, transform and return Sheet data.
  *
  * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  */
-class UserService extends AbstractService
+class SheetService extends AbstractService
 {
 }
 

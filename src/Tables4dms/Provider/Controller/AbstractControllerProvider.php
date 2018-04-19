@@ -176,5 +176,14 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
 
         throw $vex;
     }
+
+    public function getService($resourceName = null)
+    {
+        if (empty($resourceName)) {
+            $resourceName = strtolower($this->getResourceName());
+        }
+
+        return $this->app["t4dm.{$resourceName}"];
+    }
 }
 

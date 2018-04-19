@@ -57,10 +57,13 @@ $app->register(
     return $translator;
 });
 
+$app->register(new Tables4dms\Service\UserService())
+    ->register(new Tables4dms\Service\SheetService());
+
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
-$app->mount('/{_locale}/sheets', new Tables4dms\Provider\Controller\SheetControllerProvider())
+$app//->mount('/{_locale}/sheets', new Tables4dms\Provider\Controller\SheetControllerProvider())
     ->mount('/{_locale}/users', new Tables4dms\Provider\Controller\UserControllerProvider())
     ->run();
 

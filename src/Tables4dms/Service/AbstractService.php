@@ -15,7 +15,7 @@ namespace Tables4dms\Service;
  * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  * @abstract
  */
-abstract class ServiceAbstract implements \Pimple\ServiceProviderInterface
+abstract class AbstractService implements \Pimple\ServiceProviderInterface
 {
     use \Tables4dms\Traits\ResourceNameTrait;
 
@@ -29,9 +29,15 @@ abstract class ServiceAbstract implements \Pimple\ServiceProviderInterface
         $this->getResourceName(); 
     }
 
+    /**
+     * Register services with "t4dm." prefix and the lower case resource name.
+     *
+     * @param \Pimple\Container $container
+     */
     public function register(\Pimple\Container $container)
     {
-        $container['t4dm.user'] = $this;
+        $resourceName = strtolower($this->getResourceName());
+        $container["t4dm.{$resourceName}"] = $this;
         $this->app = $container;
     }
 
@@ -62,6 +68,24 @@ abstract class ServiceAbstract implements \Pimple\ServiceProviderInterface
 
         return $this->getEntityManager()
             ->getRepository($entityName);
+    }
+
+    /**
+     * Return a list of resources considering a filter.
+     *
+     * @param mixed[] $filter Params to use in a where clausule.
+     * @return array|\Tables4dms\Entity\User
+     * @todo To implement pagination.
+     */
+    public function find($filter = [])
+    {
+        if (empty($filter)) {
+            return $this->getRepository()
+                ->findAll();
+        }
+
+        return $this->getRepository()
+            ->find($filter)??[];
     }
 }
 

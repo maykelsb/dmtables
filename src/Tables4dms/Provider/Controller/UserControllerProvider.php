@@ -31,9 +31,9 @@ class UserControllerProvider extends AbstractControllerProvider
      */
     protected function usersAction()
     {
-        $this->getCc()->get('/', function(){
+        $this->get('/', function(){
             return $this->response(
-                $this->app['t4dm.user']->getUsers()
+                $this->getService()->find()
             );
         })->bind('users.list');
     }
@@ -51,9 +51,9 @@ class UserControllerProvider extends AbstractControllerProvider
      */
     protected function showUserAction()
     {
-        $this->getCc()->get('/{id}', function($id){
+        $this->get('/{id}', function($id){
             return $this->response(
-                $this->app['t4dm.user']->getUsers(['id' => $id])
+                $this->getService()->find(['id' => $id])
             );
         })->bind('user.show');
     }
@@ -71,12 +71,9 @@ class UserControllerProvider extends AbstractControllerProvider
      */
     protected function userSheetsAction()
     {
-        $this->getCc()->get('/{userid}/sheets', function($userid){
-            $data = $this->getRepository('Tables4dms\\Entity\\Sheet')
-                ->findAll(['user' => $userid]);
-
+        $this->get('/{userid}/sheets', function($userid){
             return $this->response(
-                $data,
+                $this->getService('sheet')->find(['user' => $userid]),
                 'Tables4dms\\Transformer\\SheetTransformer'
             );
         })->bind('user.sheets.list');
