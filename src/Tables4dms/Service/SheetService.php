@@ -35,6 +35,8 @@ class SheetService extends AbstractService
         $this->validate($sheet);
         $this->persist($sheet);
         $this->flush();
+
+        return $sheet->getId();
     }
 }
 

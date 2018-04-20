@@ -11,6 +11,8 @@ namespace Tables4dms\Provider\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Tables4dms\DTO\MessageDTO;
+
 /**
  * Controller for sheets requests.
  *
@@ -30,24 +32,20 @@ class SheetControllerProvider extends AbstractControllerProvider
     protected function newSheetAction()
     {
         $this->post('/', function(Request $request){
-            $sheet = new \Tables4dms\Entity\Sheet();
-            $sheet->setName($request->request->get('name'));
-            $sheet->setDescription($request->request->get('description'));
-
-            // -- todo: change to get reference
-            $sheet->setUser(
-                $this->getRepository('Tables4dms\\Entity\\User')
-                    ->find(['id' => $request->request->get('user')])
+            $sheetid = $this->getService()->create(
+                $request->request->all()
             );
 
-            $this->validate($sheet);
-            $this->getEntityManager()
-                ->persist($sheet);
+            $messageDTO = new MessageDTO();
+            $messageDTO->message = 'sheet_created';
+            $messageDTO->type = MessageDTO::TYPE_SUCCESS;
 
-            $this->getEntityManager()
-                ->flush();
-
-
+            return $this->response(
+                $messageDTO,
+                'Tables4dms\\Transformer\\MessageTransformer',
+                201,
+                ['Location' => "/index.php/en/sheets/{$sheetid}"]
+            );
         })->bind('sheets.new');
     }
 }
