@@ -9,6 +9,10 @@
 
 namespace Tables4dms\Service;
 
+use Tables4dms\Entity\Sheet;
+use Tables4dms\Entity\User;
+
+
 /**
  * Find, retrieve, transform and return Sheet data.
  *
@@ -16,5 +20,21 @@ namespace Tables4dms\Service;
  */
 class SheetService extends AbstractService
 {
+    public function create(array $data)
+    {
+        $sheet = new Sheet();
+        $sheet->setName($data['name']);
+        $sheet->setDescription($data['description']);
+        $sheet->setUser(
+            $this->getReference(
+                User::class,
+                $data['user']
+            )
+        );
+
+        $this->validate($sheet);
+        $this->persist($sheet);
+        $this->flush();
+    }
 }
 
