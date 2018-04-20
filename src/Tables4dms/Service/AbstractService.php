@@ -84,7 +84,7 @@ abstract class AbstractService implements \Pimple\ServiceProviderInterface
                 ->findAll();
         }
 
-        if (in_array('id', $filter) && 1 == count($filter)) {
+        if (key_exists('id', $filter) && 1 == count($filter)) {
             return $this->getRepository()
                 ->find($filter)??[];
         }
