@@ -21,9 +21,9 @@ class SheetControllerProvider extends AbstractControllerProvider
     protected function sheetsAction()
     {
         $this->get('/', function(){
-            $data = $this->getDefaultRepository()
-                ->findAll();
-            return $this->response($data);
+            return $this->response(
+                $this->getService()->find()
+            );
         })->bind('sheets.list');
     }
 
