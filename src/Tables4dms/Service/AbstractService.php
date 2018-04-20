@@ -92,5 +92,47 @@ abstract class AbstractService implements \Pimple\ServiceProviderInterface
         return $this->getRepository()
             ->findBy($filter)??[];
     }
+
+    public function __call($method, $params)
+    {
+        switch ($method) {
+            case 'getReference':
+            case 'persist':
+            case 'flush':
+                return call_user_func_array(
+                    [$this->getEntityManager(), $method],
+                    $params
+                );
+                break;
+            default:
+                throw new \Exception(
+                    get_class($this) . "::{$method}() does not exists.."
+                );
+        }
+    }
+
+    /**
+     * General validation method. Raises and ValidationException if needed.
+     *
+     * @return bool
+     * @throw \Tables4dms\Exception\ValidationException
+     */
+    protected function validate($entity)
+    {
+        $errors = $this->app['validator']->validate($entity);
+        if (!($errors->count())) {
+            return true;
+        }
+
+        $vex = new \Tables4dms\Exception\ValidationException();
+        foreach ($errors as $error) {
+            $vex->add(
+                $error->getPropertyPath(),
+                $error->getMessage()
+            );
+        }
+
+        throw $vex;
+    }
 }
 

@@ -137,44 +137,20 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
             . "Transformer";
     }
 
-    public function __call($methodName, $params)
+    public function __call($method, $params)
     {
-        switch ($methodName) {
+        switch ($method) {
             case 'get':
             case 'post':
                 return call_user_func_array(
-                    [$this->getCc(), $methodName],
+                    [$this->getCc(), $method],
                     $params
                 );
             default:
-                $className = get_class($this);
-                throw new \Exception("{$methodName}() is not declared in {$className}.");
+                throw new \Exception(
+                    get_class($this) . "::{$method}() does not exists."
+                );
         }
-    }
-
-    /**
-     * General validation method. Raises and ValidationException if needed.
-     *
-     * @return bool
-     * @throw \Tables4dms\Exception\ValidationException
-     */
-    protected function validate($entity)
-    {
-
-        $errors = $this->app['validator']->validate($entity);
-        if (!($errors->count())) {
-            return true;
-        }
-        
-        $vex = new \Tables4dms\Exception\ValidationException();
-        foreach ($errors as $error) {
-            $vex->add(
-                $error->getPropertyPath(),
-                $error->getMessage()
-            );
-        }
-
-        throw $vex;
     }
 
     public function getService($resourceName = null)
