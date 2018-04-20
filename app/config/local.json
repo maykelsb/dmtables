@@ -20,6 +20,7 @@
         "migrations.namespace": "Tables4dms\\Migrations"
     },
     "orm": {
+        "orm.proxies_dir": "../cache/proxies",
         "orm.auto_generate_proxies": true,
         "orm.em.options": {
             "mappings": {
