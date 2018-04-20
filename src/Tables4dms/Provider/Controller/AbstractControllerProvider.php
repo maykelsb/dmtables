@@ -88,8 +88,12 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      * @param string|null Name of the transformer.
      * @return Response
      */
-    protected function response($data, $transformerClassName = null)
-    {
+    protected function response(
+        $data,
+        $transformerClassName = null,
+        $statusCode = Response::HTTP_OK,
+        array $headers = []
+    ){
         if (is_null($transformerClassName)) {
             $transformerClassName = $this->getDefaultTransformer();
         }
@@ -109,7 +113,9 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         return new Response(
             $this->app['fractal.manager']
                 ->createData($data)
-                ->toJson()
+                ->toJson(),
+            $statusCode,
+            $headers
         );
     }
 
