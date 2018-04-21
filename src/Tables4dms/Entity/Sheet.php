@@ -54,6 +54,23 @@ class Sheet
     private $description;
 
     /**
+     * Source url.
+     *
+     * @var string
+     * @ORM\Column(type="string")
+     * @SWG\Property()
+     */
+    private $url;
+
+    /**
+     * Sheet creator.
+     * @var string
+     * @ORM\Column(type="string")
+     * @SWG\Property()
+     */
+    private $author;
+
+    /**
      * Date of user creation.
      *
      * @var \DateTime
@@ -144,6 +161,54 @@ class Sheet
     }
 
     /**
+     * Set url.
+     *
+     * @param string $url
+     *
+     * @return Sheet
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set author.
+     *
+     * @param string $author
+     *
+     * @return Sheet
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author.
+     *
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
      * Set createdAt.
      *
      * @param \DateTime $createdAt
@@ -220,6 +285,8 @@ class Sheet
         $metadata->addPropertyConstraint('name', new Assert\NotBlank())
             ->addPropertyConstraint('name', new Assert\Length(['max' => 50]));
         $metadata->addPropertyConstraint('user', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('url', new Assert\Length(['max' => 255]))
+            ->addPropertyConstraint('url', new Assert\Url());
+        $metadata->addPropertyConstraint('author', new Assert\Length(['max' => 255]));
     }
 }
-

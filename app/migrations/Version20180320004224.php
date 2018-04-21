@@ -29,6 +29,16 @@ class Version20180320004224 extends AbstractMigration
             ->setNotnull(false)
             ->setComment('Sheet description');
 
+        $table->addColumn('url', 'string')
+            ->setNotnull(false)
+            ->setLength('255')
+            ->setComment('Source url');
+
+        $table->addColumn('author', 'string')
+            ->setNotnull(false)
+            ->setLength('255')
+            ->setComment('Sheet creator');
+
         $table->addColumn('created_at', 'datetime')
             ->setDefault($this->connection->getDatabasePlatform()->getCurrentTimestampSQL());
            

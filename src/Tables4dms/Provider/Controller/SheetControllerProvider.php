@@ -48,5 +48,11 @@ class SheetControllerProvider extends AbstractControllerProvider
             );
         })->bind('sheets.new');
     }
+
+#    protected function updateSheetAction()
+#    {
+#        $this->put('/{id}', function($id, Request $request){
+#        })->bind('sheets.update');
+#    }
 }
 
