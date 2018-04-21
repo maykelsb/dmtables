@@ -19,6 +19,8 @@ use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\ResourceInterface;
 
+use \Tables4dms\DTO\MessageDTO;
+
 /**
  * Base controller provider to manage requests.
  *
@@ -28,6 +30,7 @@ use League\Fractal\Resource\ResourceInterface;
 abstract class AbstractControllerProvider implements ControllerProviderInterface
 {
     use \Tables4dms\Traits\ResourceNameTrait;
+    use \Tables4dms\Traits\TranslateTrait;
 
     /**
      * @var Silex\Application
@@ -148,6 +151,7 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         switch ($method) {
             case 'get':
             case 'post':
+            case 'put':
                 return call_user_func_array(
                     [$this->getCc(), $method],
                     $params
@@ -166,6 +170,15 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         }
 
         return $this->app["t4dm.{$resourceName}"];
+    }
+
+    protected function message($text, $type = MessageDTO::TYPE_SUCCESS)
+    {
+        $messageDTO = new MessageDTO();
+        $messageDTO->message = $this->trans($text);
+        $messageDTO->type = $type;
+
+        return $messageDTO;
     }
 }
 
