@@ -46,5 +46,29 @@ class SheetService extends AbstractService
 
         return $sheet->getId();
     }
+
+    public function update($sheet, array $data)
+    {
+        $sheet->setName($data['name']);
+        $sheet->setDescription($data['description']);
+        $sheet->setUser(
+            $this->getReference(
+                User::class,
+                $data['user']
+            )
+        );
+
+        if (key_exists('url', $data)) {
+            $sheet->setUrl($data['url']);
+        }
+
+        if (key_exists('author', $data)) {
+            $sheet->setAuthor($data['author']);
+        }
+
+        $this->validate($sheet);
+        $this->persist($sheet);
+        $this->flush();
+    }
 }
 

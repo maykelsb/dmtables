@@ -10,6 +10,7 @@
 namespace Tables4dms\Provider\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Tables4dms\DTO\MessageDTO;
 
@@ -20,8 +21,6 @@ use Tables4dms\DTO\MessageDTO;
  */
 class SheetControllerProvider extends AbstractControllerProvider
 {
-    use \Tables4dms\Traits\TranslateTrait;
-
     protected function sheetsAction()
     {
         $this->get('/', function(){
@@ -38,23 +37,33 @@ class SheetControllerProvider extends AbstractControllerProvider
                 $request->request->all()
             );
 
-            $messageDTO = new MessageDTO();
-            $messageDTO->message = $this->trans('sheet_created');
-            $messageDTO->type = MessageDTO::TYPE_SUCCESS;
-
             return $this->response(
-                $messageDTO,
-                'Tables4dms\\Transformer\\MessageTransformer',
-                201,
+                $this->message('sheet_created', MessageDTO::TYPE_SUCCESS),
+                'Tables4dms\\Transformer\\MessageDTOTransformer',
+                Response::HTTP_OK,
                 ['Location' => "/index.php/en/sheets/{$sheetid}"]
             );
         })->bind('sheets.new');
     }
 
-#    protected function updateSheetAction()
-#    {
-#        $this->put('/{id}', function($id, Request $request){
-#        })->bind('sheets.update');
-#    }
+    protected function updateSheetAction()
+    {
+        $this->put('/{id}', function($id, Request $request){
+            if (!($sheet = $this->getService()->find(['id' => $id]))) {
+                return $this->response(
+                    $this->message('sheet_not_found', MessageDTO::TYPE_WARNING),
+                    'Tables4dms\\Transformer\\MessageDTOTransformer',
+                    Response::HTTP_NOT_FOUND
+                );
+            }
+
+            $this->getService()->update($sheet, $request->query->all());
+            return $this->response(
+                $this->message('sheet_updated', MessageDTO::TYPE_SUCCESS),
+                'Tables4dms\\Transformer\\MessageDTOTransformer',
+                Response::HTTP_OK
+            );
+        })->bind('sheets.update');
+    }
 }
 
