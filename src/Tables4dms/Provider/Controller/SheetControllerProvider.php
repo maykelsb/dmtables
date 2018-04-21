@@ -20,6 +20,8 @@ use Tables4dms\DTO\MessageDTO;
  */
 class SheetControllerProvider extends AbstractControllerProvider
 {
+    use \Tables4dms\Traits\TranslateTrait;
+
     protected function sheetsAction()
     {
         $this->get('/', function(){
@@ -37,7 +39,7 @@ class SheetControllerProvider extends AbstractControllerProvider
             );
 
             $messageDTO = new MessageDTO();
-            $messageDTO->message = 'sheet_created';
+            $messageDTO->message = $this->trans('sheet_created');
             $messageDTO->type = MessageDTO::TYPE_SUCCESS;
 
             return $this->response(
