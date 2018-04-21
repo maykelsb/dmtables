@@ -18,7 +18,7 @@ use Tables4dms\DTO\MessageDTO;
  *
  * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  */
-class MessageTransformer extends Fractal\TransformerAbstract
+class MessageDTOTransformer extends Fractal\TransformerAbstract
 {
     public function transform(MessageDTO $messageDTO)
     {
