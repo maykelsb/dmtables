@@ -95,7 +95,7 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         $data,
         $transformerClassName = null,
         $statusCode = Response::HTTP_OK,
-        array $headers = []
+        array $headers = ["Content-Type: application/json"]
     ){
         if (is_null($transformerClassName)) {
             $transformerClassName = $this->getDefaultTransformer();
