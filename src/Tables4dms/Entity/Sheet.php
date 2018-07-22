@@ -24,6 +24,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Sheet extends AbstractEntity
 {
+    const SHEET_ACTIVE = 'A';
+    const SHEET_DELETED = 'D';
+    const SHEET_SUSPENDED = 'S';
+
     /**
      * Sheet id.
      *
@@ -95,6 +99,15 @@ class Sheet extends AbstractEntity
      * @ORM\JoinColumn(name="userid", referencedColumnName="id")
      */
     private $user;
+
+    /**
+     * Sheet situation.
+     *
+     * @var string
+     * @ORM\Column(type="string")
+     * @SWG\Property()
+     */
+    private $situation;
 
     public function __construct()
     {
@@ -288,5 +301,27 @@ class Sheet extends AbstractEntity
         $metadata->addPropertyConstraint('url', new Assert\Length(['max' => 255]))
             ->addPropertyConstraint('url', new Assert\Url());
         $metadata->addPropertyConstraint('author', new Assert\Length(['max' => 255]));
+    }
+
+    /**
+     * Set situation.
+     *
+     * @param string $situation
+     * @return \Tables4dms\Entity\Sheet
+     */
+    public function setSituation($situation)
+    {
+        $this->situation = $situation;
+        return $this;
+    }
+
+    /**
+     * Get situation.
+     *
+     * @return string
+     */
+    public function getSituation()
+    {
+        return $this->situation;
     }
 }
