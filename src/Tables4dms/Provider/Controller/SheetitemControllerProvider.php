@@ -25,10 +25,10 @@ class SheetitemControllerProvider extends AbstractControllerProvider
      * List sheet items.
      *
      * @SWG\Get(
-     *  path="/{_locate}/sheetitems",
+     *  path="/{_locale}/sheetitems",
      *  @SWG\Response(
      *      response=200,
-     *      description="Sheet item list."
+     *      description="Sheet items list."
      *  )
      * )
      */
@@ -40,5 +40,37 @@ class SheetitemControllerProvider extends AbstractControllerProvider
             );
         })->bind('sheetitems.list');
     }
+
+    /**
+     * Create new sheet item.
+     *
+     * @SW\Post(
+     *  path="/{_locale}/sheetitems",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="New sheet item."
+     *  )
+     * )
+     */
+     protected function newSheetitemAction()
+     {
+
+        $this->post('/', function(Request $request){
+            $sheetitemid = $this->getService()->create(
+                $request->request->all()
+            );
+
+            return $this->responseOk(
+                'sheet_item_created',
+                ['Location' => "/index.php/en/sheetitems/{$sheetitemid}"]
+            );
+        })->bind('sheetitems.new');
+    }
+
+
+
+
+
+
 }
 

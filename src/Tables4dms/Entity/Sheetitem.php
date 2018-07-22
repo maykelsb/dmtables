@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Tables4dms\Repository\SheetitemRepository")
  * @SWG\Definition(definition="Sheet")
  */
-class Sheetitem
+class Sheetitem extends AbstractEntity
 {
     /**
      * Sheetitem id.
@@ -84,7 +84,7 @@ class Sheetitem
      * )
      * @SWG\Property()
      */
-    private $createdAt = 'CURRENT_TIMESTAMP';
+    private $createdAt;
 
     /**
      * Date of last update on item.
@@ -98,7 +98,7 @@ class Sheetitem
      * )
      * @SWG\Property()
      */
-    private $updatedAt = 'CURRENT_TIMESTAMP';
+    private $updatedAt;
 
     /**
      * Sheet to which the item belongs to.
@@ -123,6 +123,12 @@ class Sheetitem
      * @SWG\Property()
      */
     private $subsheet;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
 
     /**
      * Get id.
@@ -282,8 +288,8 @@ class Sheetitem
     {
         $metadata->addPropertyConstraint('description', new Assert\NotBlank())
             ->addPropertyConstraint('description', new Assert\Length(['max' => 255]));
-        $metada->addPropertyConstraint('dicenumber', new Assert\NotBlank());
-        $metada->addPropertyConstraint('sheet', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('dicenumber', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('sheet', new Assert\NotBlank());
     }
 }
 

@@ -20,21 +20,20 @@ use Tables4dms\Entity\Sheet;
 class SheetitemService extends AbstractService
 {
     /**
-     * Create a new sheet.
+     * Create a new sheet item.
      *
-     * @param mixed $data Sheet data.
-     * @return New sheet ID.
+     * @param mixed $data Sheet item data.
+     * @return New sheet item ID.
      */
-//    public function create (array $data)
-//    {
-//        $data['situation'] = Sheet::SHEET_ACTIVE;
-//        $data['user'] = $this->getReference(
-//            User::class,
-//            $data['user']
-//        );
+    public function create (array $data)
+    {
+        $data['sheet'] = $this->getReference(
+            Sheet::class,
+            $data['sheet']
+        );
 
-//        return parent::create($data);
-//    }
+        return parent::create($data);
+    }
 
     /**
      * Update sheet data.
