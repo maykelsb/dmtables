@@ -9,6 +9,8 @@
 
 namespace Tables4dms\Service;
 
+use Tables4dms\Entity\AbstractEntity;
+
 /**
  * Provide basic functions to find, retrieve, transform and return data.
  *
@@ -60,37 +62,14 @@ abstract class AbstractService implements \Pimple\ServiceProviderInterface
      */
     protected function getRepository($resourceName = null)
     {
-        if (is_null($resourceName)) {
-            $resourceName = $this->getResourceName();
-        }
-
-        $entityName = "{$this->app['config']['app.package']}\\Entity\\{$resourceName}";
-
         return $this->getEntityManager()
-            ->getRepository($entityName);
+            ->getRepository($this->getEntityName());
     }
 
-    /**
-     * Return a list of resources considering a filter.
-     *
-     * @param mixed[] $filter Params to use in a where clausule.
-     * @return array|\Tables4dms\Entity\User
-     * @todo To implement pagination.
-     */
-    public function find($filter = [])
+    protected function getEntityName()
     {
-        if (empty($filter)) {
-            return $this->getRepository()
-                ->findAll();
-        }
-
-        if (key_exists('id', $filter) && 1 == count($filter)) {
-            return $this->getRepository()
-                ->find($filter)??[];
-        }
-
-        return $this->getRepository()
-            ->findBy($filter)??[];
+        return "\\{$this->app['config']['app.package']}\\Entity\\"
+            . $this->getResourceName();
     }
 
     public function __call($method, $params)
@@ -133,6 +112,63 @@ abstract class AbstractService implements \Pimple\ServiceProviderInterface
         }
 
         throw $vex;
+    }
+
+    /**
+     * Return a list of resources considering a filter.
+     *
+     * @param mixed[] $filter Params to use in a where clausule.
+     * @return array|\Tables4dms\Entity\User
+     * @todo To implement pagination.
+     */
+    public function find($filter = [])
+    {
+        if (empty($filter)) {
+            return $this->getRepository()
+                ->findAll();
+        }
+
+        if (key_exists('id', $filter) && 1 == count($filter)) {
+            return $this->getRepository()
+                ->find($filter)??[];
+        }
+
+        return $this->getRepository()
+            ->findBy($filter)??[];
+    }
+
+    /**
+     * Apply received data into the entity and save.
+     *
+     * @param \Tables4dms\Entity\AbstractEntity $entity
+     * @param mixed $data New data to be saved.
+     */
+    protected function save(AbstractEntity $entity, array $data)
+    {
+        unset($data['id']);
+        foreach ($data as $field => $value) {
+            $entity->$field = $value;
+        }
+
+        $this->validate($entity);
+        $this->persist($entity);
+        $this->flush();
+    }
+
+    /**
+     * Create a new entity, apply received data and save it.
+     *
+     * @param mixed $data New data to be saved.
+     * @return New entity ID.
+     */
+    public function create(array $data)
+    {
+        $entityName = $this->getEntityName();
+
+        $entity = new $entityName();
+        $this->save($entity, $data);
+
+        return $entity->getId();
     }
 }
 

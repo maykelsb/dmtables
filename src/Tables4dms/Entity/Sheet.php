@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="sheet")
  * @SWG\Definition(definition="Sheet")
  */
-class Sheet
+class Sheet extends AbstractEntity
 {
     /**
      * Sheet id.

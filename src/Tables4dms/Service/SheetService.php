@@ -9,9 +9,9 @@
 
 namespace Tables4dms\Service;
 
+use Tables4dms\Entity\AbstractEntity;
 use Tables4dms\Entity\Sheet;
 use Tables4dms\Entity\User;
-
 
 /**
  * Find, retrieve, transform and return Sheet data.
@@ -20,55 +20,36 @@ use Tables4dms\Entity\User;
  */
 class SheetService extends AbstractService
 {
-    public function create(array $data)
+    /**
+     * Create a new sheet.
+     *
+     * @param mixed $data Sheet data.
+     * @return New sheet ID.
+     */
+    public function create (array $data)
     {
-        $sheet = new Sheet();
-        $sheet->setName($data['name']);
-        $sheet->setDescription($data['description']);
-        $sheet->setUser(
-            $this->getReference(
-                User::class,
-                $data['user']
-            )
+        $data['user'] = $this->getReference(
+            User::class,
+            $data['user']
         );
 
-        if (key_exists('url', $data)) {
-            $sheet->setUrl($data['url']);
-        }
-
-        if (key_exists('author', $data)) {
-            $sheet->setAuthor($data['author']);
-        }
-
-        $this->validate($sheet);
-        $this->persist($sheet);
-        $this->flush();
-
-        return $sheet->getId();
+        return parent::create($data);
     }
 
-    public function update($sheet, array $data)
+    /**
+     * Update sheet data.
+     *
+     * @param \Tables4dms\Entity\AbstractEntity
+     * @param mixed Sheet data.
+     */
+    public function update(AbstractEntity $sheet, array $data)
     {
-        $sheet->setName($data['name']);
-        $sheet->setDescription($data['description']);
-        $sheet->setUser(
-            $this->getReference(
-                User::class,
-                $data['user']
-            )
+        $data['user'] = $this->getReference(
+            User::class,
+            $data['user']
         );
 
-        if (key_exists('url', $data)) {
-            $sheet->setUrl($data['url']);
-        }
-
-        if (key_exists('author', $data)) {
-            $sheet->setAuthor($data['author']);
-        }
-
-        $this->validate($sheet);
-        $this->persist($sheet);
-        $this->flush();
+        parent::save($sheet, $data);
     }
 }
 
