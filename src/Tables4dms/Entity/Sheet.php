@@ -93,7 +93,7 @@ class Sheet extends AbstractEntity
     private $updatedAt;
 
     /**
-     * Many sheets have one creator.
+     * Sheet creator.
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="sheets")
      * @ORM\JoinColumn(name="userid", referencedColumnName="id")

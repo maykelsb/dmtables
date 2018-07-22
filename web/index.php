@@ -58,12 +58,14 @@ $app->register(
 });
 
 $app->register(new Tables4dms\Service\UserService())
-    ->register(new Tables4dms\Service\SheetService());
+    ->register(new Tables4dms\Service\SheetService())
+    ->register(new Tables4dms\Service\SheetitemService());
 
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->mount('/{_locale}/sheets', new Tables4dms\Provider\Controller\SheetControllerProvider())
+    ->mount('/{_locale}/sheetitems', new Tables4dms\Provider\Controller\SheetitemControllerProvider())
     ->mount('/{_locale}/users', new Tables4dms\Provider\Controller\UserControllerProvider())
     ->run();
 
