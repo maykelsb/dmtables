@@ -28,6 +28,7 @@ class SheetService extends AbstractService
      */
     public function create (array $data)
     {
+        $data['situation'] = Sheet::SHEET_ACTIVE;
         $data['user'] = $this->getReference(
             User::class,
             $data['user']
@@ -44,12 +45,19 @@ class SheetService extends AbstractService
      */
     public function update(AbstractEntity $sheet, array $data)
     {
-        $data['user'] = $this->getReference(
-            User::class,
-            $data['user']
-        );
+        if (key_exists('user', $data)) {
+            $data['user'] = $this->getReference(
+                User::class,
+                $data['user']
+            );
+        }
 
         parent::save($sheet, $data);
+    }
+
+    public function delete(AbstractEntity $sheet)
+    {
+        $this->update($sheet, ['situation' => 'D']);
     }
 }
 

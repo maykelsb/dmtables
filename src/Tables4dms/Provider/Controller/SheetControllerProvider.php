@@ -68,10 +68,8 @@ class SheetControllerProvider extends AbstractControllerProvider
                 $request->request->all()
             );
 
-            return $this->response(
-                $this->message('sheet_created', MessageDTO::TYPE_SUCCESS),
-                'Tables4dms\\Transformer\\MessageDTOTransformer',
-                Response::HTTP_OK,
+            return $this->responseOk(
+                'sheet_created',
                 ['Location' => "/index.php/en/sheets/{$sheetid}"]
             );
         })->bind('sheets.new');
@@ -80,21 +78,25 @@ class SheetControllerProvider extends AbstractControllerProvider
     protected function updateSheetAction()
     {
         $this->put('/{id}', function($id, Request $request){
-            if (!($sheet = $this->getService()->find(['id' => $id]))) {
-                return $this->response(
-                    $this->message('sheet_not_found', MessageDTO::TYPE_WARNING),
-                    'Tables4dms\\Transformer\\MessageDTOTransformer',
-                    Response::HTTP_NOT_FOUND
-                );
+            if (empty($sheet = $this->loadEntity($id))) {
+                return $this->responseNotFound('sheet_not_found');
             }
 
             $this->getService()->update($sheet, $request->query->all());
-            return $this->response(
-                $this->message('sheet_updated', MessageDTO::TYPE_SUCCESS),
-                'Tables4dms\\Transformer\\MessageDTOTransformer',
-                Response::HTTP_OK
-            );
-        })->bind('sheets.update');
+            return $this->responseOk('sheet_updated');
+        })->bind('sheet.update');
+    }
+
+    protected function deleteSheetAction()
+    {
+        $this->delete('/{id}', function($id){
+            if (empty($sheet = $this->loadEntity($id))) {
+                return $this->responseNotFound('sheet_not_found');
+            }
+
+            $this->getService()->delete($sheet);
+            return $this->responseOk('sheet_deleted');
+        })->bind('sheet.delete');
     }
 }
 

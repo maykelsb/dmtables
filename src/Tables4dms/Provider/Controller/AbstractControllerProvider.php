@@ -152,6 +152,7 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
             case 'get':
             case 'post':
             case 'put':
+            case 'delete':
                 return call_user_func_array(
                     [$this->getCc(), $method],
                     $params
@@ -179,6 +180,30 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         $messageDTO->type = $type;
 
         return $messageDTO;
+    }
+
+    protected function loadEntity($id)
+    {
+        return $this->getService()->find(['id' => $id]);
+    }
+
+    protected function responseNotFound($message)
+    {
+        return $this->response(
+            $this->message($message, MessageDTO::TYPE_WARNING),
+            '\\Tables4dms\\Transformer\\MessageDTOTransformer',
+            Response::HTTP_NOT_FOUND
+        );
+    }
+
+    protected function responseOk($message, array $headers = [])
+    {
+        return $this->response(
+            $this->message($message, MessageDTO::TYPE_SUCCESS),
+            '\\Tables4dms\\Transformer\\MessageDTOTransformer',
+            Response::HTTP_OK,
+            $headers
+        );
     }
 }
 
