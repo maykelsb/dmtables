@@ -28,8 +28,14 @@ class SheetTransformer extends Fractal\TransformerAbstract
             'url' => $sheet->getUrl(),
             'author' => $sheet->getAuthor(),
             'links' => [
-                'rel' => 'self',
-                'link' => "/sheets/{$sheet->getId()}"
+                [
+                    'rel' => 'self',
+                    'link' => "/sheets/{$sheet->getId()}"
+                ],
+                [
+                    'rel' => 'creator',
+                    'link' => "/users/{$sheet->getUser()->getId()}"
+                ]
             ]
         ];
     }

@@ -21,6 +21,17 @@ use Tables4dms\DTO\MessageDTO;
  */
 class SheetControllerProvider extends AbstractControllerProvider
 {
+    /**
+     * List sheets.
+     *
+     * @SWG\Get(
+     *  path="/{_locate}/sheets",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="Sheet list."
+     *  )
+     * )
+     */
     protected function sheetsAction()
     {
         $this->get('/', function(){
@@ -28,6 +39,26 @@ class SheetControllerProvider extends AbstractControllerProvider
                 $this->getService()->find()
             );
         })->bind('sheets.list');
+    }
+
+    /**
+     * Show sheet data.
+     *
+     * @SWG\Get(
+     *  path="/{_locale}/sheets/{id}",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="Sheet data."
+     *  )
+     * )
+     */
+    protected function showSheetAction()
+    {
+        $this->get('/{id}', function($id){
+            return $this->response(
+                $this->getService()->find(['id' => $id])
+            );
+        })->bind('sheet.show');
     }
 
     protected function newSheetAction()
