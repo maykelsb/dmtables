@@ -26,8 +26,14 @@ class UserTransformer extends Fractal\TransformerAbstract
             'user' => $user->getUser(),
             'fullname' => $user->getFullname(),
             'links' => [
-                'rel' => 'self',
-                'link' => "/users/{$user->getId()}"
+                [
+                    'rel' => 'self',
+                    'link' => "/users/{$user->getId()}"
+                ],
+                [
+                    'rel' => 'sheets',
+                    'link' => "/users/{$user->getId()}/sheets"
+                ]
             ]
         ];
     }

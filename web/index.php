@@ -41,8 +41,29 @@ Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([
     'loadClass'
 ]);
 
+$app->register(new Silex\Provider\LocaleServiceProvider());
+$app->register(
+    new Silex\Provider\TranslationServiceProvider(),
+    ['locale_fallbacks' => [$app['config']['locale.fallback']]]
+)->extend('translator', function($translator, $app){
+    $translator->addLoader(
+        'yaml',
+        new Symfony\Component\Translation\Loader\YamlFileLoader()
+    );
+
+    $translator->addResource('yaml', $app['config']['locale.lang']['en'], 'en');
+    $translator->addResource('yaml', $app['config']['locale.lang']['pt_br'], 'pt_br');
+
+    return $translator;
+});
+
+$app->register(new Tables4dms\Service\UserService())
+    ->register(new Tables4dms\Service\SheetService());
+
+$app->register(new Silex\Provider\ValidatorServiceProvider());
+
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
-$app->mount('/tables', new Tables4dms\Provider\Controller\TablesControllerProvider())
-    ->mount('/users', new Tables4dms\Provider\Controller\UsersControllerProvider())
+$app->mount('/{_locale}/sheets', new Tables4dms\Provider\Controller\SheetControllerProvider())
+    ->mount('/{_locale}/users', new Tables4dms\Provider\Controller\UserControllerProvider())
     ->run();
 

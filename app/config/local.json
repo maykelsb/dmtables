@@ -1,6 +1,7 @@
 {
     "env": "%__ENV__%",
     "debug": true,
+    "app.package": "Tables4dms",
     "database": {
         "db.options": {
             "driver": "pdo_mysql",
@@ -13,14 +14,14 @@
         }
     },
     "migrations": {
-        "migrations.name": "Table4DMs migrations",
-        "migrations.table_name": "table4dms_migrations",
+        "migrations.name": "Tables4DMs migrations",
+        "migrations.table_name": "tables4dms_migrations",
         "migrations.directory": "app/migrations",
-        "migrations.namespace": "Table4dms\\Migrations"
+        "migrations.namespace": "Tables4dms\\Migrations"
     },
     "orm": {
-        "orm.proxies_dir": "src/App/Entity/Proxy",
-        "orm.auto_generate_proxies": false,
+        "orm.proxies_dir": "../cache/proxies",
+        "orm.auto_generate_proxies": true,
         "orm.em.options": {
             "mappings": {
                 "0": {
@@ -34,6 +35,11 @@
     },
     "swagger": {
         "swagger.servicePath": "../src/Tables4dms"
-    }
+    },
+    "locale.lang": {
+        "en": "../app/locale/en.yml",
+        "pt_br": "../app/locale/pt_br.yml"
+    },
+    "locale.fallback": "en"
 }
 

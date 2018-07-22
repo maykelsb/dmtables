@@ -15,7 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 
+use League\Fractal\Resource\Item;
+use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\ResourceInterface;
+
+use \Tables4dms\DTO\MessageDTO;
 
 /**
  * Base controller provider to manage requests.
@@ -25,6 +29,9 @@ use League\Fractal\Resource\ResourceInterface;
  */
 abstract class AbstractControllerProvider implements ControllerProviderInterface
 {
+    use \Tables4dms\Traits\ResourceNameTrait;
+    use \Tables4dms\Traits\TranslateTrait;
+
     /**
      * @var Silex\Application
      */
@@ -34,10 +41,6 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      * @var Silex\ControllerCollection
      */
     protected $cc;
-
-    public function __construct()
-    {
-    }
 
     /**
      * Return reference for cc
@@ -80,26 +83,126 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
     }
 
     /**
-     * Get a reference for the entity manager.
+     * Receives data, create a response and return it as JSON.
      *
-     * @param string $name Entity manager name.
+     * This method tries to discover the transformer to be used.
+     *
+     * @param mixed|object|array Data to be transformed.
+     * @param string|null Name of the transformer.
+     * @return Response
      */
-    protected function getEntityManager($name = 'default')
-    {
-        return $this->app['orm.ems'][$name];
+    protected function response(
+        $data,
+        $transformerClassName = null,
+        $statusCode = Response::HTTP_OK,
+        array $headers = ["Content-Type: application/json"]
+    ){
+        if (is_null($transformerClassName)) {
+            $transformerClassName = $this->getDefaultTransformer();
+        }
+
+        if (!$this->isTransformerClass($transformerClassName)) {
+            throw new Exception("{$transformerClassName} is not a valid transformer class.");
+        }
+
+        switch (gettype($data)) {
+            case 'object':
+                $data = new Item($data, new $transformerClassName());
+                break;
+            default:
+                $data = new Collection($data, new $transformerClassName());
+        }
+
+        return new Response(
+            $this->app['fractal.manager']
+                ->createData($data)
+                ->toJson(),
+            $statusCode,
+            $headers
+        );
     }
 
     /**
-     * Convert a fractal resource to json and return as Response.
+     * Verify if a class is a transformer.
      *
-     * @param ResourceInterface $resource
+     * @param string $transformerClassName Transformer class name with namespace.
+     * @return bool
      */
-    protected function response(ResourceInterface $resource)
+    protected function isTransformerClass($transformerClassName)
     {
-        return new Response(
-            $this->app['fractal.manager']
-                ->createData($resource)
-                ->toJson()
+        $rfClass = new \ReflectionClass($transformerClassName);
+        return $rfClass->isSubclassOf('League\\Fractal\\TransformerAbstract');
+    }
+
+    /**
+     * Retrieves the transformer class name with namespace associated to the controller.
+     *
+     * @return string
+     */
+    protected function getDefaultTransformer()
+    {
+        return "{$this->app['config']['app.package']}\\Transformer\\"
+            . $this->getResourceName()
+            . "Transformer";
+    }
+
+    public function __call($method, $params)
+    {
+        switch ($method) {
+            case 'get':
+            case 'post':
+            case 'put':
+            case 'delete':
+                return call_user_func_array(
+                    [$this->getCc(), $method],
+                    $params
+                );
+            default:
+                throw new \Exception(
+                    get_class($this) . "::{$method}() does not exists."
+                );
+        }
+    }
+
+    public function getService($resourceName = null)
+    {
+        if (empty($resourceName)) {
+            $resourceName = strtolower($this->getResourceName());
+        }
+
+        return $this->app["t4dm.{$resourceName}"];
+    }
+
+    protected function message($text, $type = MessageDTO::TYPE_SUCCESS)
+    {
+        $messageDTO = new MessageDTO();
+        $messageDTO->message = $this->trans($text);
+        $messageDTO->type = $type;
+
+        return $messageDTO;
+    }
+
+    protected function loadEntity($id)
+    {
+        return $this->getService()->find(['id' => $id]);
+    }
+
+    protected function responseNotFound($message)
+    {
+        return $this->response(
+            $this->message($message, MessageDTO::TYPE_WARNING),
+            '\\Tables4dms\\Transformer\\MessageDTOTransformer',
+            Response::HTTP_NOT_FOUND
+        );
+    }
+
+    protected function responseOk($message, array $headers = [])
+    {
+        return $this->response(
+            $this->message($message, MessageDTO::TYPE_SUCCESS),
+            '\\Tables4dms\\Transformer\\MessageDTOTransformer',
+            Response::HTTP_OK,
+            $headers
         );
     }
 }

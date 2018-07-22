@@ -11,10 +11,12 @@ namespace Tables4dms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Swagger\Annotations as SWG;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User entity.
  *
+ * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  * @ORM\Entity(repositoryClass="Tables4dms\Repository\UserRepository")
  * @ORM\Table(name="user")
  * @SWG\Definition(definition="User")
@@ -36,7 +38,7 @@ class User
      * User name.
      *
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=45)
      * @SWG\Property()
      */
     private $user;
@@ -45,7 +47,7 @@ class User
      * User password.
      *
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=32)
      */
     private $password;
 
@@ -53,7 +55,7 @@ class User
      * User full name.
      *
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=100)
      * @SWG\Property()
      */
     private $fullname;
@@ -75,6 +77,18 @@ class User
      * @SWG\Property()
      */
     private $updatedAt;
+
+    /**
+     * One user has many sheets.
+     *
+     * @ORM\oneToMany(targetEntity="Sheet", mappedBy="user")
+     */
+    private $sheets;
+
+    public function __construct()
+    {
+        $this->sheets = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -210,5 +224,40 @@ class User
     {
         return $this->getFullname();
     }   
-}
 
+    /**
+     * Add sheet.
+     *
+     * @param \Tables4dms\Entity\Sheet $sheet
+     *
+     * @return User
+     */
+    public function addSheet(\Tables4dms\Entity\Sheet $sheet)
+    {
+        $this->sheets[] = $sheet;
+
+        return $this;
+    }
+
+    /**
+     * Remove sheet.
+     *
+     * @param \Tables4dms\Entity\Sheet $sheet
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeSheet(\Tables4dms\Entity\Sheet $sheet)
+    {
+        return $this->sheets->removeElement($sheet);
+    }
+
+    /**
+     * Get sheets.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSheets()
+    {
+        return $this->sheets;
+    }
+}
