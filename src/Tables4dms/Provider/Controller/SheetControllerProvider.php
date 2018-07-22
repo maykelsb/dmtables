@@ -61,6 +61,17 @@ class SheetControllerProvider extends AbstractControllerProvider
         })->bind('sheet.show');
     }
 
+    /**
+     * Create new sheet.
+     *
+     * @SWG\Post(
+     *  path="/{_locale}/sheets",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="New sheet."
+     *  )
+     * )
+     */
     protected function newSheetAction()
     {
         $this->post('/', function(Request $request){
@@ -75,6 +86,21 @@ class SheetControllerProvider extends AbstractControllerProvider
         })->bind('sheets.new');
     }
 
+    /**
+     * Update an existing sheet.
+     *
+     * @SWG\Put(
+     *  path="/{_locale}/sheets/{id}",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="Sheet updated."
+     *  ),
+     *  @SWG\Response(
+     *      response=404,
+     *      description="Sheet not found."
+     *  )
+     * )
+     */
     protected function updateSheetAction()
     {
         $this->put('/{id}', function($id, Request $request){
@@ -87,6 +113,21 @@ class SheetControllerProvider extends AbstractControllerProvider
         })->bind('sheet.update');
     }
 
+    /**
+     * Delete an existing sheet.
+     *
+     * @SWG\Delete(
+     *  path="/{_locale}/sheets/{id}",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="Sheet logically deleted."
+     *  ),
+     *  @SWG\Response(
+     *      response=404,
+     *      description="Sheet not found."
+     *  )
+     * )
+     */
     protected function deleteSheetAction()
     {
         $this->delete('/{id}', function($id){
