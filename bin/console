@@ -9,28 +9,11 @@
  * @link http://github.com/maykelsb/tables4dms-api
  */
 
-/**
- * Composer autoload
- */
-$loader = require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
-$app = new Silex\Application();
 $console = new Lokhman\Silex\Console\Console($app);
 
 $app->register(
-    new Lokhman\Silex\Provider\ConfigServiceProvider(),
-    ['config.dir' => __DIR__ . '/../app/config']
-);
-
-$app['debug'] = $app['config']['debug'];
-
-$app->register(
-    new Silex\Provider\DoctrineServiceProvider(),
-    $app['config']['database']
-)->register(
-    new Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(),
-    $app['config']['orm']
-)->register(
     new Kurl\Silex\Provider\DoctrineMigrationsProvider($console),
     $app['config']['migrations']
 );
@@ -56,6 +39,11 @@ Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([
 
 $console->setHelperSet($helperSet);
 Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
+
+// -- Dump routes command
+$utilCommand = new Tables4dms\Command\UtilCommand();
+//$utilCommand->setApp(new Silex\Application());
+$console->add($utilCommand);
 
 $app->boot();
 $console->run();

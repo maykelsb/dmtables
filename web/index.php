@@ -8,26 +8,7 @@
  * @link http://github.com/maykelsb/tables4dms-api
  */
 
-/**
- * Composer autoload
- */
-$loader = require __DIR__ . '/../vendor/autoload.php';
-
-$app = new Silex\Application();
-$app->register(
-    new Lokhman\Silex\Provider\ConfigServiceProvider(),
-    ['config.dir' => __DIR__ . '/../app/config']
-);
-
-$app['debug'] = $app['config']['debug'];
-
-$app->register(
-    new Silex\Provider\DoctrineServiceProvider(),
-    $app['config']['database']
-)->register(
-    new Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(),
-    $app['config']['orm']
-);
+require_once __DIR__ . '/../app/bootstrap.php';
 
 $app->register(new Tables4dms\Provider\FractalServiceProvider());
 $app->register(
@@ -63,9 +44,5 @@ $app->register(new Tables4dms\Service\UserService())
 
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
-$app->mount('/{_locale}/sheets', new Tables4dms\Provider\Controller\SheetControllerProvider())
-    ->mount('/{_locale}/sheetitems', new Tables4dms\Provider\Controller\SheetitemControllerProvider())
-    ->mount('/{_locale}/users', new Tables4dms\Provider\Controller\UserControllerProvider())
-    ->run();
+$app->run();
 
