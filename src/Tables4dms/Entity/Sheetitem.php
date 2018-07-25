@@ -290,6 +290,16 @@ class Sheetitem extends AbstractEntity
             ->addPropertyConstraint('description', new Assert\Length(['max' => 255]));
         $metadata->addPropertyConstraint('dicenumber', new Assert\NotBlank());
         $metadata->addPropertyConstraint('sheet', new Assert\NotBlank());
+
+//        $metadata->addConstraint(new Assert\UniqueEntity([
+//            'fields' => ['sheet', 'dicenumber'],
+//            'message' => 'sheetitem_dicenumber_already_exists'
+//        ]));
+
+//        $metadata->addConstraint(new Assert\UniqueEntity([
+//            'fields' => ['sheet', 'description'],
+//            'message' => 'sheetitem_description_already_exists'
+//        ]));
     }
 }
 
