@@ -3,3 +3,10 @@ app/config/prod.json
 vendor
 cache
 src/Tables4dms/Entity/*.php~
+
+###> symfony/framework-bundle ###
+/.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###

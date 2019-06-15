@@ -1,50 +1,39 @@
 #!/usr/bin/env php
 <?php
-/**
- * This file is part of Tables4DMs project.
- *
- * @author Maykel S. Braz <maykelsb@yahoo.com.br>
- * @license https://opensource.org/licenses/MIT The MIT License
- * @copyright 2017 Maykel S. Braz
- * @link http://github.com/maykelsb/tables4dms-api
- */
 
-require_once __DIR__ . '/../app/bootstrap.php';
+use App\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Debug\Debug;
+use Symfony\Component\Dotenv\Dotenv;
 
-$console = new Lokhman\Silex\Console\Console($app);
+set_time_limit(0);
 
-$app->register(
-    new Kurl\Silex\Provider\DoctrineMigrationsProvider($console),
-    $app['config']['migrations']
-);
+require __DIR__.'/../vendor/autoload.php';
 
-// -- Loading doctrine commands
-$helperSet = $console->getHelperSet();
-$helperSet->set(
-    new Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper(
-        $app['orm.em']->getConnection()
-    ),
-    'db'
-);
-$helperSet->set(
-    new Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($app['orm.em']),
-    'em'
-);
+if (!class_exists(Application::class)) {
+    throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
+}
 
-// -- Fix to Doctrine annotations find Swagger namespace
-Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([
-    $loader,
-    'loadClass'
-]);
+if (!isset($_SERVER['APP_ENV'])) {
+    if (!class_exists(Dotenv::class)) {
+        throw new \RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
+    }
+    (new Dotenv())->load(__DIR__.'/../.env');
+}
 
-$console->setHelperSet($helperSet);
-Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
+$input = new ArgvInput();
+$env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? 'dev', true);
+$debug = (bool) ($_SERVER['APP_DEBUG'] ?? ('prod' !== $env)) && !$input->hasParameterOption('--no-debug', true);
 
-// -- Dump routes command
-$utilCommand = new Tables4dms\Command\UtilCommand();
-//$utilCommand->setApp(new Silex\Application());
-$console->add($utilCommand);
+if ($debug) {
+    umask(0000);
 
-$app->boot();
-$console->run();
+    if (class_exists(Debug::class)) {
+        Debug::enable();
+    }
+}
 
+$kernel = new Kernel($env, $debug);
+$application = new Application($kernel);
+$application->run($input);
