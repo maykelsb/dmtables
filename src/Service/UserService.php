@@ -18,23 +18,11 @@ use Tables4DMs\Repository\UserRepository;
  *
  * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  */
-class UserService
+class UserService extends AbstractService
 {
-    /** @var UserRepository */
-    protected $userRepository;
-
     public function __construct(UserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
+        $this->repository = $userRepository;
     }
 
-    public function findAll()
-    {
-        return $this->userRepository->findAll();
-    }
-
-    public function getById($id)
-    {
-        return $this->userRepository->findById($id);
-    }
 }

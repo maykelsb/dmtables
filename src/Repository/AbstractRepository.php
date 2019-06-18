@@ -30,6 +30,6 @@ abstract class AbstractRepository
             return call_user_func_array([$this->repository, $name], $args);
         }
 
-        throw new Exception('Deu ruim');
+        throw new \Exception('Deu ruim: ' . get_class() . '->' . $name);
     }
 }
