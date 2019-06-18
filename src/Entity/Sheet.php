@@ -47,6 +47,8 @@ class Sheet
      * @var string
      * @ORM\Column(type="string", length=50)
      * @SWG\Property()
+     * @Assert\NotBlank
+     * @Assert\Length(max=50)
      */
     private $name;
 
@@ -65,6 +67,9 @@ class Sheet
      * @var string
      * @ORM\Column(type="string")
      * @SWG\Property()
+     * @Assert\Length(max=255)
+     * @Assert\Url
+
      */
     private $url;
 
@@ -73,6 +78,7 @@ class Sheet
      * @var string
      * @ORM\Column(type="string")
      * @SWG\Property()
+     * @Assert\Length(max=500)
      */
     private $author;
 
@@ -108,6 +114,7 @@ class Sheet
      * @var string
      * @ORM\Column(type="string")
      * @SWG\Property()
+     * @Assert\NotBlank
      */
     private $situation;
 
@@ -293,16 +300,6 @@ class Sheet
     public function getUser()
     {
         return $this->user;
-    }
-
-    static public function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata->addPropertyConstraint('name', new Assert\NotBlank())
-            ->addPropertyConstraint('name', new Assert\Length(['max' => 50]));
-        $metadata->addPropertyConstraint('user', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('url', new Assert\Length(['max' => 255]))
-            ->addPropertyConstraint('url', new Assert\Url());
-        $metadata->addPropertyConstraint('author', new Assert\Length(['max' => 255]));
     }
 
     /**

@@ -17,7 +17,7 @@ abstract class AbstractRepository
     /**
      * @var EntityRepository
      */
-    private $repository;
+    protected $repository;
 
     public function __construct(EntityManagerInterface $emi, $entityClass)
     {

@@ -21,10 +21,6 @@ use Tables4DMs\Entity\Sheet;
  */
 final class SheetRepository extends AbstractRepository
 {
-    /**
-     * @var EntityRepository
-     */
-    private $repository;
 
     public function __construct(EntityManagerInterface $emi)
     {

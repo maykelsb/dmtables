@@ -28,8 +28,8 @@ class AbstractService
         return $this->repository->findAll();
     }
 
-    public function getById($id)
+    public function findOneById($id)
     {
-        return $this->repository->findById($id);
+        return $this->repository->findOneById($id);
     }
 }

@@ -14,6 +14,10 @@ use Tables4DMs\Entity\User;
 
 use Tables4DMs\Repository\SheetRepository;
 
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * Sheet service
  *
@@ -21,22 +25,54 @@ use Tables4DMs\Repository\SheetRepository;
  */
 class SheetService extends AbstractService
 {
-    public function __construct(SheetRepository $sheetRepository)
-    {
+    /**
+     * @var UserService;
+     */
+    protected $userService;
+
+    /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $em;
+
+    public function __construct(
+        SheetRepository $sheetRepository,
+        UserService $userService,
+        ValidatorInterface $validator,
+        EntityManagerInterface $entityManager
+    ) {
         $this->repository = $sheetRepository;
+        $this->userService = $userService;
+        $this->validator = $validator;
+        $this->em = $entityManager;
     }
 
     public function create(array $data)
     {
-        $entity = new Sheet();
-        $entity->setName($data['name'])
+        $sheet = new Sheet();
+        $sheet->setName($data['name'])
             ->setSituation(Sheet::SHEET_ACTIVE)
             ->setDescription($data['description'])
             ->setUrl($data['url'])
             ->setAuthor($data['author'])
             ->setUser(
-                (new UserService())->getById($data['user'])
+                $this->userService->findOneById($data['user'])
             );
-        die(var_dump($entity));
+
+        $errors = $this->validator->validate($sheet);
+
+        if ($errors->count()) {
+            throw new \Exception('Deu ruim na criação');
+        }
+
+        $this->em->persist($sheet);
+        $this->em->flush();
+
+        return $sheet;
     }
 }
