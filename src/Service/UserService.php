@@ -20,6 +20,7 @@ use Tables4DMs\Repository\UserRepository;
  */
 class UserService
 {
+    /** @var UserRepository */
     protected $userRepository;
 
     public function __construct(UserRepository $userRepository)
@@ -31,8 +32,6 @@ class UserService
     {
         return $this->userRepository->findAll();
     }
-
-
 
     public function getById($id)
     {

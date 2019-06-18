@@ -10,7 +10,6 @@
 namespace Tables4DMs\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 
 use Tables4DMs\Entity\User;
 
@@ -19,25 +18,11 @@ use Tables4DMs\Entity\User;
  *
  * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  */
-final class UserRepository
+final class UserRepository extends AbstractRepository
 {
-    /**
-     * @var EntityRepository
-     */
-    private $repository;
 
     public function __construct(EntityManagerInterface $emi)
     {
-        $this->repository = $emi->getRepository(User::class);
+        parent::__construct($emi, User::class);
     }
-
-    public function __call($name, $args)
-    {
-        if (is_callable([$this->repository, $name])) {
-            return call_user_func_array([$this->repository, $name], $args);
-        }
-
-        throw new Exception('Deu ruim');
-    }
-
 }
