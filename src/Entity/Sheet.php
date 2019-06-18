@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="sheet")
  * @SWG\Definition(definition="Sheet")
  */
-class Sheet
+class Sheet implements EntityInterface
 {
     const SHEET_ACTIVE = 'A';
     const SHEET_DELETED = 'D';

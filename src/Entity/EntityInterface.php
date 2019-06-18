@@ -10,10 +10,10 @@
 namespace Tables4DMs\Entity;
 
 /**
- * Base methods for entities.
+ * Base interface for entities.
  * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  */
-class AbstractEntity
+interface EntityInterface
 {
 
 }

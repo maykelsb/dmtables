@@ -21,7 +21,6 @@ use Swagger\Annotations as SWG;
 
 use Tables4DMs\Entity\Sheet;
 use Tables4DMs\Service\SheetService;
-#use Tables4DMs\Form\SheetType;
 
 /**
  * Controller for sheets requests.
@@ -73,7 +72,7 @@ class SheetController extends FOSRestController
      */
     public function postSheetAction(Request $request, SheetService $sheetService)
     {
-        $sheet = $sheetService->create($request->request->all());
+        $sheet = $sheetService->save($request->request->all());
         return $this->handleView($this->view($sheet));
     }
 
@@ -84,7 +83,7 @@ class SheetController extends FOSRestController
      */
     public function putSheetAction(Sheet $sheet, Request $request, SheetService $sheetShevice)
     {
-        $sheet = $sheetService->update($sheet, $request->request->all());
+        $sheet = $sheetService->save($sheet, $request->request->all());
         return $this->handleView($this->view($sheet));
     }
 

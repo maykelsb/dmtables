@@ -30,46 +30,39 @@ class SheetService extends AbstractService
      */
     protected $userService;
 
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
-
     public function __construct(
         SheetRepository $sheetRepository,
         UserService $userService,
         ValidatorInterface $validator,
         EntityManagerInterface $entityManager
     ) {
-        $this->repository = $sheetRepository;
+        parent::__construct($validator, $entityManager);
+
         $this->userService = $userService;
-        $this->validator = $validator;
-        $this->em = $entityManager;
+        $this->repository = $sheetRepository;
     }
 
-    public function create(array $data)
+    public function save(array $data)
     {
-        $sheet = new Sheet();
+        if (isset($data['id'])) {
+            $sheet = $this->findOneById($data['id']);
+        }
+
+        if (!isset($sheet)) {
+            $sheet = (new Sheet())
+                ->setSituation(Sheet::SHEET_ACTIVE)
+                ->setUser(
+                    $this->userService->findOneById($data['user'])
+                );
+        }
+
         $sheet->setName($data['name'])
             ->setSituation(Sheet::SHEET_ACTIVE)
             ->setDescription($data['description'])
             ->setUrl($data['url'])
-            ->setAuthor($data['author'])
-            ->setUser(
-                $this->userService->findOneById($data['user'])
-            );
+            ->setAuthor($data['author']);
 
-        $errors = $this->validator->validate($sheet);
-
-        if ($errors->count()) {
-            throw new \Exception('Deu ruim na criação');
-        }
-
+        $this->validate($sheet);
         $this->em->persist($sheet);
         $this->em->flush();
 

@@ -19,7 +19,7 @@ use Tables4DMs\Entity\Sheet;
  *
  * @author Maykel S. Braz <maykelsb@yahoo.com.br>
  */
-final class SheetRepository extends AbstractRepository
+final class SheetRepository extends AbstractRepository implements RepositoryInterface
 {
 
     public function __construct(EntityManagerInterface $emi)

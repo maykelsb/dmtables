@@ -10,6 +10,13 @@
 namespace Tables4DMs\Service;
 
 use Tables4DMs\Respository\RepositoryInterface;
+use Tables4DMs\Respository\AbstractEntity;
+
+use Tables4DMs\Entity\EntityInterface;
+
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Abstract service
@@ -23,6 +30,24 @@ class AbstractService
      */
     protected $repository;
 
+    /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $em;
+
+    public function __construct(
+        ValidatorInterface $validator,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->validator = $validator;
+        $this->em = $entityManager;
+    }
+
     public function findAll()
     {
         return $this->repository->findAll();
@@ -31,5 +56,14 @@ class AbstractService
     public function findOneById($id)
     {
         return $this->repository->findOneById($id);
+    }
+
+    protected function validate(EntityInterface $ae)
+    {
+        $errors = $this->validator->validate($ae);
+
+        if ($errors->count()) {
+            throw new \Exception('Deu ruim no update/criacao');
+        }
     }
 }
