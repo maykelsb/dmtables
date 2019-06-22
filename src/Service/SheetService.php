@@ -68,4 +68,14 @@ class SheetService extends AbstractService
 
         return $sheet;
     }
+
+    public function inactivate(Sheet $sheet)
+    {
+        $sheet->setSituation(Sheet::SHEET_DELETED);
+        $this->validate($sheet);
+        $this->em->persist($sheet);
+        $this->em->flush();
+
+        return $sheet;
+    }
 }

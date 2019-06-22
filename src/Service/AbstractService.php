@@ -58,6 +58,11 @@ class AbstractService
         return $this->repository->findOneById($id);
     }
 
+    public function findBy(array $filter)
+    {
+        return $this->repository->findBy($filter);
+    }
+
     protected function validate(EntityInterface $ae)
     {
         $errors = $this->validator->validate($ae);

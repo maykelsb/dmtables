@@ -44,7 +44,7 @@ class SheetController extends FOSRestController
      */
     public function getSheetsAction(SheetService $ss)
     {
-        $sheets = $ss->findAll();
+        $sheets = $ss->findBy(["situation" => Sheet::SHEET_ACTIVE]);
         return $this->handleView($this->view($sheets));
     }
 
@@ -88,13 +88,24 @@ class SheetController extends FOSRestController
     }
 
     /**
-     * Delete a sheet.
+     * Delete an existing sheet.
      *
      * @Rest\Delete("/sheet/{id}")
+     * @SWG\Delete(
+     *  path="/sheet/{id}",
+     *  @SWG\Response(
+     *      response=200,
+     *      description="Sheet logically deleted."
+     *  ),
+     *  @SWG\Response(
+     *      response=404,
+     *      description="Sheet not found."
+     *  )
+     * )
      */
     public function deleteSheetAction(Sheet $sheet, SheetService $sheetService)
     {
-        $sheet = $sheetService->delete($sheet);
+        $sheet = $sheetService->inactivate($sheet);
         return $this->handleView($this->view(null));
     }
 }
