@@ -42,13 +42,13 @@ class SheetService extends AbstractService
         $this->repository = $sheetRepository;
     }
 
-    public function save(array $data)
+    public function save(array $data, Sheet $sheet = null)
     {
-        if (isset($data['id'])) {
+        if (isset($data['id']) && is_null($sheet)) {
             $sheet = $this->findOneById($data['id']);
         }
 
-        if (!isset($sheet)) {
+        if (is_null($sheet)) {
             $sheet = (new Sheet())
                 ->setSituation(Sheet::SHEET_ACTIVE)
                 ->setUser(
@@ -57,7 +57,6 @@ class SheetService extends AbstractService
         }
 
         $sheet->setName($data['name'])
-            ->setSituation(Sheet::SHEET_ACTIVE)
             ->setDescription($data['description'])
             ->setUrl($data['url'])
             ->setAuthor($data['author']);

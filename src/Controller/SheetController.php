@@ -79,11 +79,15 @@ class SheetController extends FOSRestController
     /**
      * Update sheet data.
      *
-     * @Rest\Put("/sheet/{id}")
+     * @Rest\Patch("/sheet/{id}")
      */
-    public function putSheetAction(Sheet $sheet, Request $request, SheetService $sheetShevice)
+    public function patchSheetAction(Sheet $sheet, Request $request, SheetService $sheetService)
     {
-        $sheet = $sheetService->save($sheet, $request->request->all());
+        $sheetData = $request->query->all();
+        unset($sheetData['user']);
+        unset($sheetData['situation']);
+
+        $sheet = $sheetService->save($sheetData, $sheet);
         return $this->handleView($this->view($sheet));
     }
 
