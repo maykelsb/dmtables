@@ -1,5 +1,3 @@
-app/config/staging.json
-app/config/prod.json
-vendor
-cache
-src/Tables4dms/Entity/*.php~
+/vendor/
+/var/
+.env.local
