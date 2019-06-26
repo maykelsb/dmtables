@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace Tables4dms\Migrations;
+namespace Tables4DMs\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
