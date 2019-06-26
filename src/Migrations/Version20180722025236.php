@@ -12,7 +12,7 @@ class Version20180722025236 extends AbstractMigration
 {
     protected $tableName = "sheet";
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->getTable($this->tableName);
         $table->addColumn('situation', 'string')
@@ -23,7 +23,7 @@ class Version20180722025236 extends AbstractMigration
         $table->addIndex(['situation'], 'sheet_idx_situation');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $table = $schema->getTable($this->tableName);
         $table->dropColumn('situation');

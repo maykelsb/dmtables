@@ -12,7 +12,7 @@ class Version20180320100518 extends AbstractMigration
 {
     protected $tableName = 'sheetitem';
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable($this->tableName);
         $table->addColumn('id', 'integer')
@@ -43,7 +43,7 @@ class Version20180320100518 extends AbstractMigration
             ->addForeignKeyConstraint('sheet', ['subsheetid'], ['id'], [], 'sheetitem_fk_subsheet');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable($this->tableName);
     }

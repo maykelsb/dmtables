@@ -12,7 +12,7 @@ class Version20180323010039 extends AbstractMigration
 {
     protected $tableName = 'auth';
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable($this->tableName);
         $table->addColumn('id', 'integer')
@@ -39,7 +39,7 @@ class Version20180323010039 extends AbstractMigration
             ->addForeignKeyConstraint('user', ['userid'], ['id'], [], 'auth_fk_user');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable($this->tableName);
     }

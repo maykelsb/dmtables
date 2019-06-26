@@ -12,7 +12,7 @@ class Version20180311033522 extends AbstractMigration
 {
     protected $tableName = 'user';
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $table = $schema->createTable($this->tableName);
         $table->addColumn('id', 'integer')
@@ -41,7 +41,7 @@ class Version20180311033522 extends AbstractMigration
             ->addUniqueIndex(['user']);
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $dml = <<<DML
 INSERT INTO {$this->tableName}(user, password, fullname)
@@ -50,7 +50,7 @@ DML;
         $this->connection->exec($dml);
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable($this->tableName);
     }
